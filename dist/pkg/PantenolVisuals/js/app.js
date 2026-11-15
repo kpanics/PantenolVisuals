@@ -1,4 +1,8 @@
 /* ══════════════ PANTENOL VISUALS · ЛОГИКА ЛАУНЧЕРА ══════════════ */
+"use strict";
+
+const $  = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
 
 /* ───────── Данные ───────── */
 const VERSIONS = [
@@ -8,12 +12,6 @@ const VERSIONS = [
   { num: "1.19.2",  loader: "Quilt",   tags: ["Sodium"],         size: "1.1 ГБ" },
   { num: "1.16.5",  loader: "Forge",   tags: ["OptiFine"],       size: "980 МБ" },
   { num: "1.12.2",  loader: "Vanilla", tags: [],                 size: "720 МБ" },
-];
-
-const ACCOUNTS = [
-  { name: "Steve_RU",    type: "Лицензия", ava: "assets/avatar.png" },
-  { name: "Notch_Fan88", type: "Ely.by",   ava: "assets/avatar.png" },
-  { name: "Гость",       type: "Оффлайн",  ava: "assets/avatar.png" },
 ];
 
 const SERVERS = [
@@ -29,7 +27,7 @@ const MODS = [
   { name: "Lithium",           ver: "0.14.2", cat: "perf",    catName: "Оптимизация", desc: "Оптимизация логики сервера и тиков",          on: true,  c1: "#38bdf8", c2: "#0369a1" },
   { name: "Dynamic FPS",       ver: "3.7.6",  cat: "perf",    catName: "Оптимизация", desc: "Снижает FPS, когда игра свёрнута",            on: false, c1: "#fbbf24", c2: "#b45309" },
   { name: "Complementary RP",  ver: "5.2",    cat: "shaders", catName: "Шейдеры",     desc: "Шейдерпак Reimagined, пресет «Кино»",         on: true,  c1: "#fb7185", c2: "#be123c" },
-  { name: "PvP HUD+",          ver: "2.1.0",  cat: "pvp",     catName: "PvP",         desc: "Кристалл-аура индикаторы, таймеры тотемов",   on: true,  c1: "#ef4444", c2: "#7f1d1d" },
+  { name: "PvP HUD+",          ver: "2.1.0",  cat: "pvp",     catName: "PvP",         desc: "Индикаторы кристаллов, таймеры тотемов",      on: true,  c1: "#ef4444", c2: "#7f1d1d" },
   { name: "Keystrokes Lite",   ver: "1.4",    cat: "hud",     catName: "HUD",         desc: "Отображение WASD и CPS на экране",            on: false, c1: "#64748b", c2: "#1e293b" },
   { name: "Jade",              ver: "15.8",   cat: "hud",     catName: "HUD",         desc: "Информация о блоке, на который смотришь",     on: true,  c1: "#22d3ee", c2: "#0e7490" },
   { name: "Terralith",         ver: "2.5.7",  cat: "world",   catName: "Мир",         desc: "Сотни новых биомов без новых блоков",         on: false, c1: "#4ade80", c2: "#166534" },
@@ -37,28 +35,36 @@ const MODS = [
 ];
 
 const PRODUCTS = [
-  { id: "rp-foton",    cat: "rp",      flag: "ХИТ",  flagClass: "flag-hit", img: "assets/shop-realistic.jpg", name: "Ресурспак «Фотон» 1024x",   author: "Pantenol Studio", price: 499, old: 699 },
-  { id: "rp-anime",    cat: "rp",      flag: "NEW",  flagClass: "flag-new", img: "assets/shop-anime.jpg",    name: "Ресурспак «Тюльпан»",      author: "MikaDraws",       price: 299 },
-  { id: "rp-pvp",      cat: "rp",      flag: null,   flagClass: "",         img: "assets/shop-pvp.jpg",      name: "PvP-пак «Неон»",           author: "Pantenol Studio", price: 199 },
-  { id: "cfg-fixpal",  cat: "blogger", flag: "ХИТ",  flagClass: "flag-hit", img: "assets/shop-blogger.jpg",  name: "Конфиг «Как у ФиксПэла»",  author: "FixPal",          price: 349 },
-  { id: "cfg-nerkin",  cat: "blogger", flag: null,   flagClass: "",         img: "assets/news-update.jpg",   name: "Конфиг Неркина",           author: "Nerkin",          price: 249 },
-  { id: "cfg-admin",   cat: "admin",   flag: "NEW",  flagClass: "flag-new", img: "assets/news-event.jpg",    name: "Админ-конфиг Pantenol SMP", author: "Администрация",   price: 449 },
+  { id: "rp-foton",    cat: "rp",      flag: "ХИТ",  flagClass: "flag-hit", img: "assets/shop-realistic.jpg", name: "Ресурспак «Фотон» 1024x",    author: "Pantenol Studio", price: 499, old: 699 },
+  { id: "rp-anime",    cat: "rp",      flag: "NEW",  flagClass: "flag-new", img: "assets/shop-anime.jpg",     name: "Ресурспак «Тюльпан»",       author: "MikaDraws",       price: 299 },
+  { id: "rp-pvp",      cat: "rp",      flag: null,   flagClass: "",         img: "assets/shop-pvp.jpg",       name: "PvP-пак «Неон»",            author: "Pantenol Studio", price: 199 },
+  { id: "cfg-fixpal",  cat: "blogger", flag: "ХИТ",  flagClass: "flag-hit", img: "assets/shop-blogger.jpg",   name: "Конфиг «Как у ФиксПэла»",   author: "FixPal",          price: 349 },
+  { id: "cfg-nerkin",  cat: "blogger", flag: null,   flagClass: "",         img: "assets/news-update.jpg",    name: "Конфиг Неркина",            author: "Nerkin",          price: 249 },
+  { id: "cfg-admin",   cat: "admin",   flag: "NEW",  flagClass: "flag-new", img: "assets/news-event.jpg",     name: "Админ-конфиг Pantenol SMP", author: "Администрация",   price: 449 },
 ];
+
+const TAB_TITLES = { home: "Главная", play: "Играть", mods: "Моды", shop: "Магазин", settings: "Настройки" };
 
 /* ───────── Состояние ───────── */
 const state = {
   version: VERSIONS[0],
-  account: ACCOUNTS[0],
+  account: null,
   cart: new Set(),
   launching: false,
 };
 
-const $  = (sel) => document.querySelector(sel);
-const $$ = (sel) => document.querySelectorAll(sel);
+/* ───────── Хранилище аккаунтов ───────── */
+const store = {
+  get users()    { try { return JSON.parse(localStorage.getItem("pv_users") || "{}"); } catch { return {}; } },
+  set users(v)   { localStorage.setItem("pv_users", JSON.stringify(v)); },
+  get session()  { return localStorage.getItem("pv_session"); },
+  set session(v) { v ? localStorage.setItem("pv_session", v) : localStorage.removeItem("pv_session"); },
+};
 
 /* ───────── Уведомления ───────── */
 function toast(title, sub = "", icon = "✓") {
   const box = $("#toasts");
+  if (!box) return;
   const el = document.createElement("div");
   el.className = "toast";
   el.innerHTML = `
@@ -71,6 +77,204 @@ function toast(title, sub = "", icon = "✓") {
   }, 3400);
 }
 
+/* ───────── Универсальный выпадающий список ─────────
+   Каждый дропдаун регистрируется через registerDropdown:
+   - btn:  кнопка-триггер (класс .open навешивается автоматически)
+   - menu: контейнер .dropdown (закрытие — классом)
+   - renderItems(menu, close): заполняет список при каждом открытии
+*/
+const dropdowns = [];
+
+function registerDropdown(btn, menu, renderItems) {
+  if (!btn || !menu) return;
+  const dd = { btn, menu };
+  dropdowns.push(dd);
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    const willOpen = !menu.classList.contains("open");
+    closeAllDropdowns();
+    if (!willOpen) return;
+    menu.innerHTML = "";
+    renderItems(menu, closeAllDropdowns);
+    menu.classList.add("open");
+    btn.classList.add("open");
+  });
+}
+
+function closeAllDropdowns() {
+  dropdowns.forEach(({ btn, menu }) => {
+    menu.classList.remove("open");
+    btn.classList.remove("open");
+  });
+}
+document.addEventListener("click", closeAllDropdowns);
+
+/* ───────── ЭКРАН АВТОРИЗАЦИИ ───────── */
+const authScreen = $("#authScreen");
+const app = $("#app");
+
+function showAuth() {
+  app.hidden = true;
+  authScreen.classList.remove("hidden");
+  authScreen.style.display = "flex";
+}
+
+function enterLauncher(user) {
+  state.account = user;
+  applyAccount();
+  authScreen.classList.add("hidden");
+  setTimeout(() => { authScreen.style.display = "none"; }, 480);
+  app.hidden = false;
+  toast(`Привет, ${user.name}! 👋`, user.type === "Оффлайн" ? "Оффлайн-режим активен" : "Сессия восстановлена", "👤");
+}
+
+/* Переключение вкладок Вход/Регистрация */
+$("#tabLogin").addEventListener("click", () => {
+  $("#tabLogin").classList.add("active");
+  $("#tabRegister").classList.remove("active");
+  $("#formLogin").hidden = false;
+  $("#formRegister").hidden = true;
+});
+$("#tabRegister").addEventListener("click", () => {
+  $("#tabRegister").classList.add("active");
+  $("#tabLogin").classList.remove("active");
+  $("#formRegister").hidden = false;
+  $("#formLogin").hidden = true;
+});
+
+function authError(el, card, msg) {
+  el.textContent = msg;
+  card.classList.remove("shake");
+  void card.offsetWidth; /* перезапуск анимации */
+  card.classList.add("shake");
+}
+
+/* Вход */
+$("#formLogin").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const card = $("#authCard");
+  const nick = $("#loginNick").value.trim();
+  const pass = $("#loginPass").value;
+  const errEl = $("#loginErr");
+
+  if (nick.length < 3) return authError(errEl, card, "Ник короче 3 символов");
+  const user = store.users[nick];
+  if (!user) return authError(errEl, card, "Аккаунт не найден — зарегистрируйтесь");
+  if (user.pass !== pass) return authError(errEl, card, "Неверный пароль");
+
+  errEl.textContent = "";
+  if ($("#loginRemember").checked) store.session = nick;
+  enterLauncher({ name: nick, type: "Pantenol ID" });
+});
+
+/* Регистрация */
+$("#formRegister").addEventListener("submit", (e) => {
+  e.preventDefault();
+  const card = $("#authCard");
+  const nick = $("#regNick").value.trim();
+  const pass = $("#regPass").value;
+  const pass2 = $("#regPass2").value;
+  const errEl = $("#regErr");
+
+  if (!/^\w{3,16}$/.test(nick)) return authError(errEl, card, "Ник: 3–16 латинских букв, цифр или _");
+  if (pass.length < 6) return authError(errEl, card, "Пароль короче 6 символов");
+  if (pass !== pass2) return authError(errEl, card, "Пароли не совпадают");
+  const users = store.users;
+  if (users[nick]) return authError(errEl, card, "Этот ник уже занят");
+
+  users[nick] = { pass, created: Date.now() };
+  store.users = users;
+  store.session = nick;
+  errEl.textContent = "";
+  toast("Аккаунт создан 🎉", `Добро пожаловать, ${nick}!`, "★");
+  enterLauncher({ name: nick, type: "Pantenol ID" });
+});
+
+/* Microsoft — мок OAuth */
+$("#btnMicrosoft").addEventListener("click", () => {
+  toast("Microsoft OAuth", "Окно авторизации откроется в браузере (демо)", "🪟");
+});
+
+/* Оффлайн-режим */
+$("#btnGuest").addEventListener("click", () => {
+  enterLauncher({ name: "Гость", type: "Оффлайн" });
+});
+
+/* ───────── Кнопка «Аккаунт» справа сверху ───────── */
+function applyAccount() {
+  const name = state.account ? state.account.name : "Аккаунт";
+  $("#accountBtnName").textContent = name;
+}
+
+registerDropdown($("#accountMenuBtn"), $("#accountMenu"), (menu, close) => {
+  const users = store.users;
+  const names = Object.keys(users);
+
+  const head = document.createElement("div");
+  head.className = "dropdown-head";
+  head.textContent = "Аккаунты";
+  menu.appendChild(head);
+
+  /* Текущий оффлайн/гость */
+  if (state.account && !users[state.account.name]) {
+    menu.appendChild(accountItem(state.account.name, state.account.type, true, close));
+  }
+  names.forEach((n) => {
+    menu.appendChild(accountItem(n, "Pantenol ID", state.account && state.account.name === n, close));
+  });
+
+  const div1 = document.createElement("div");
+  div1.className = "dropdown-divider";
+  menu.appendChild(div1);
+
+  const add = document.createElement("button");
+  add.type = "button";
+  add.className = "dropdown-item";
+  add.innerHTML = `<span style="color:var(--accent)">＋ Добавить аккаунт</span>`;
+  add.addEventListener("click", (e) => { e.stopPropagation(); close(); store.session = null; showAuth(); });
+  menu.appendChild(add);
+
+  const out = document.createElement("button");
+  out.type = "button";
+  out.className = "dropdown-item danger";
+  out.innerHTML = `<span>Выйти из аккаунта</span>`;
+  out.addEventListener("click", (e) => {
+    e.stopPropagation();
+    close();
+    store.session = null;
+    state.account = null;
+    showAuth();
+    toast("Вы вышли", "Сессия завершена", "👋");
+  });
+  menu.appendChild(out);
+});
+
+function accountItem(name, type, isCurrent, close) {
+  const item = document.createElement("button");
+  item.type = "button";
+  item.className = "dropdown-item";
+  item.innerHTML = `
+    <img src="assets/avatar.png" alt="">
+    <span><b>${name}</b>${isCurrent ? ' <span style="color:var(--accent)">· текущий</span>' : ""}</span>
+    <span class="dim">${type}</span>`;
+  item.addEventListener("click", (e) => {
+    e.stopPropagation();
+    state.account = { name, type };
+    store.session = name;
+    applyAccount();
+    close();
+    toast("Аккаунт переключён", `Теперь вы играете как ${name}`, "👤");
+  });
+  return item;
+}
+
+$("#logoutBtn").addEventListener("click", () => {
+  store.session = null;
+  state.account = null;
+  closeAllDropdowns();
+  showAuth();
+});
+
 /* ───────── Вкладки ───────── */
 $$(".nav-item").forEach((btn) => {
   btn.addEventListener("click", () => {
@@ -78,76 +282,28 @@ $$(".nav-item").forEach((btn) => {
     btn.classList.add("active");
     $$(".page").forEach((p) => p.classList.remove("active"));
     $("#page-" + btn.dataset.tab).classList.add("active");
+    $("#topbarTitle").textContent = TAB_TITLES[btn.dataset.tab] || "";
+    closeAllDropdowns();
     $(".content").scrollTo({ top: 0, behavior: "smooth" });
   });
 });
 
-/* ───────── Выпадающие списки ───────── */
-function setupDropdown(btnId, dropId, renderItem, onPick, closeSiblings) {
-  const btn = $(btnId);
-  const drop = $(dropId);
-  btn.addEventListener("click", (e) => {
-    e.stopPropagation();
-    closeSiblings();
-    drop.classList.toggle("open");
-    btn.classList.toggle("open", drop.classList.contains("open"));
-    if (drop.classList.contains("open")) {
-      drop.innerHTML = "";
-      renderItem(drop, () => {
-        drop.classList.remove("open");
-        btn.classList.remove("open");
-      });
-      onPick._done = true;
-    }
-  });
-}
-
-function closeAllDropdowns() {
-  $$(".dropdown").forEach((d) => d.classList.remove("open"));
-  $$(".select-btn").forEach((b) => b.classList.remove("open"));
-}
-document.addEventListener("click", closeAllDropdowns);
-
-setupDropdown("#versionBtn", "#versionDropdown", (drop, close) => {
+/* ───────── Выбор релиза ───────── */
+registerDropdown($("#versionBtn"), $("#versionDropdown"), (menu, close) => {
   VERSIONS.forEach((v) => {
     const item = document.createElement("button");
+    item.type = "button";
     item.className = "dropdown-item";
     item.innerHTML = `
-      <span><b>${v.num}</b> ${v.note ? "· <span style='color:var(--accent)'>" + v.note + "</span>" : ""}</span>
-      <span class="dim">${v.loader}</span>`;
+      <span><b>${v.num}</b>${v.note ? ' · <span style="color:var(--accent)">' + v.note + "</span>" : ""}</span>
+      <span class="dim">${v.loader} · ${v.size}</span>`;
     item.addEventListener("click", (e) => {
       e.stopPropagation();
       selectVersion(v);
       close();
     });
-    drop.appendChild(item);
+    menu.appendChild(item);
   });
-});
-
-setupDropdown("#accountBtn", "#accountDropdown", (drop, close) => {
-  ACCOUNTS.forEach((a) => {
-    const item = document.createElement("button");
-    item.className = "dropdown-item";
-    item.innerHTML = `
-      <img src="${a.ava}" alt="">
-      <span><b>${a.name}</b></span>
-      <span class="dim">${a.type}</span>`;
-    item.addEventListener("click", (e) => {
-      e.stopPropagation();
-      selectAccount(a);
-      close();
-    });
-    drop.appendChild(item);
-  });
-  const add = document.createElement("button");
-  add.className = "dropdown-item";
-  add.innerHTML = `<span style="color:var(--accent)">＋ Добавить аккаунт</span>`;
-  add.addEventListener("click", (e) => {
-    e.stopPropagation();
-    close();
-    toast("Добавление аккаунта", "Окно авторизации Microsoft откроется в системном браузере", "＋");
-  });
-  drop.appendChild(add);
 });
 
 function selectVersion(v) {
@@ -158,46 +314,33 @@ function selectVersion(v) {
   renderVersionGrid();
 }
 
-function selectAccount(a) {
-  state.account = a;
-  $("#accountValue").textContent = `${a.name} · ${a.type}`;
-  $("#accountName").textContent = a.name;
-  toast("Аккаунт переключён", `Теперь вы играете как ${a.name}`, "👤");
-}
-
-$("#accountChip").addEventListener("click", () => {
-  toast("Профиль Steve_RU", "Управление аккаунтами — во вкладке «Главная»", "👤");
-});
-
 /* ───────── Счётчики статистики ───────── */
 function animateCounters() {
   $$(".stat-num").forEach((el) => {
     const target = +el.dataset.count;
     const dur = 1100;
     const t0 = performance.now();
-    (function tick(t) {
-      const p = Math.min((t - t0) / dur, 1);
+    (function tick() {
+      const p = Math.min((performance.now() - t0) / dur, 1);
       const eased = 1 - Math.pow(1 - p, 3);
       el.textContent = Math.round(target * eased).toLocaleString("ru-RU");
       if (p < 1) requestAnimationFrame(tick);
-    })(t0);
+    })();
   });
 }
-animateCounters();
 
 /* ───────── Запуск игры ───────── */
 const LAUNCH_STAGES = [
   ["Проверка целостности файлов…", 18],
   ["Загрузка библиотек Fabric…", 42],
   ["Применение шейдерпака…", 61],
-  ["Инициализация JVM (8 ГБ)…", 82],
+  ["Инициализация JVM…", 82],
   ["Запуск Minecraft…", 100],
 ];
 
 function launchGame() {
   if (state.launching) return;
   state.launching = true;
-  if (state.ram) $("#metaRam").textContent = state.ram + " ГБ";
 
   const wrap = $("#progressWrap");
   const fill = $("#progressFill");
@@ -218,11 +361,12 @@ function launchGame() {
       bigBtn.style.pointerEvents = "";
       $("#bigPlayText").textContent = "ИГРАТЬ";
       wrap.hidden = true;
-      toast("Игра запущена 🎮", `Minecraft ${state.version.num} · аккаунт ${state.account.name}`, "▶");
+      const name = state.account ? state.account.name : "Игрок";
+      toast("Игра запущена 🎮", `Minecraft ${state.version.num} · аккаунт ${name}`, "▶");
       return;
     }
     const [label, pct] = LAUNCH_STAGES[stage];
-    stageEl.textContent = label;
+    stageEl.textContent = label.replace("JVM…", `JVM (${state.ram || 8} ГБ)…`);
     pctEl.textContent = pct + "%";
     fill.style.width = pct + "%";
     if (stage === LAUNCH_STAGES.length - 1) $("#bigPlayText").textContent = "ЗАПУСК…";
@@ -259,7 +403,6 @@ function renderServers() {
     list.appendChild(el);
   });
 }
-renderServers();
 
 /* ───────── Сетка версий ───────── */
 function renderVersionGrid() {
@@ -282,7 +425,6 @@ function renderVersionGrid() {
     grid.appendChild(el);
   });
 }
-renderVersionGrid();
 
 /* ───────── Моды ───────── */
 let modCat = "all";
@@ -294,8 +436,7 @@ function renderMods() {
   const filtered = MODS.filter((m) => {
     const okCat = modCat === "all" || m.cat === modCat;
     const q = modQuery.trim().toLowerCase();
-    const okQ = !q || m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q);
-    return okCat && okQ;
+    return okCat && (!q || m.name.toLowerCase().includes(q) || m.desc.toLowerCase().includes(q));
   });
 
   if (!filtered.length) {
@@ -328,8 +469,6 @@ function renderMods() {
 function updateModsBadge() {
   $("#modsBadge").textContent = MODS.filter((m) => m.on).length;
 }
-updateModsBadge();
-renderMods();
 
 $("#modSearch").addEventListener("input", (e) => {
   modQuery = e.target.value;
@@ -364,13 +503,12 @@ function renderShop() {
         <span class="product-author">автор: <b>${p.author}</b></span>
         <div class="product-foot">
           <span class="product-price">${p.old ? `<s>${p.old} ₽</s>` : ""}${p.price} ₽</span>
-          <button class="btn-buy ${inCart ? "added" : ""}" data-buy="${p.id}">${inCart ? "В корзине" : "Купить"}</button>
+          <button type="button" class="btn-buy ${inCart ? "added" : ""}" data-buy="${p.id}">${inCart ? "В корзине" : "Купить"}</button>
         </div>
       </div>`;
     grid.appendChild(el);
   });
 }
-renderShop();
 
 $("#shopChips").addEventListener("click", (e) => {
   const chip = e.target.closest(".chip");
@@ -413,7 +551,6 @@ function syncRam() {
   ramSlider.style.setProperty("--fill", pct + "%");
 }
 ramSlider.addEventListener("input", syncRam);
-syncRam();
 
 $("#accentPicker").addEventListener("click", (e) => {
   const btn = e.target.closest(".accent");
@@ -427,3 +564,24 @@ $("#accentPicker").addEventListener("click", (e) => {
   root.setProperty("--accent-glow", color + "73");
   toast("Тема обновлена", "Акцентный цвет применён ко всему лаунчеру", "🎨");
 });
+
+/* ───────── Старт ───────── */
+renderServers();
+renderVersionGrid();
+updateModsBadge();
+renderMods();
+renderShop();
+syncRam();
+
+const savedSession = store.session;
+if (savedSession && store.users[savedSession]) {
+  /* Сессия сохранена — заходим без экрана входа */
+  state.account = { name: savedSession, type: "Pantenol ID" };
+  applyAccount();
+  authScreen.style.display = "none";
+  app.hidden = false;
+  toast(`С возвращением, ${savedSession}!`, "Сессия восстановлена", "👤");
+} else {
+  showAuth();
+}
+animateCounters();

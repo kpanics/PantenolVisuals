@@ -131,19 +131,17 @@ body {
 }
 .badge-cart { background: var(--accent); color: #052e1f; }
 
-.account-chip {
-  display: flex; align-items: center; gap: 11px;
-  padding: 11px 12px; border-radius: 14px; cursor: pointer;
+.logout-btn {
+  display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%;
+  padding: 12px; border-radius: 13px; cursor: pointer;
   background: rgba(255,255,255,.045); border: 1px solid var(--line);
+  color: var(--text-dim); font-family: var(--font-body); font-weight: 700; font-size: 13px;
   transition: .2s;
 }
-.account-chip:hover { border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.logout-btn:hover { color: #fb7185; border-color: rgba(251,113,133,.4); background: rgba(251,113,133,.07); }
+.logout-btn svg { width: 18px; height: 18px; fill: currentColor; }
 .account-ava { width: 38px; height: 38px; border-radius: 10px; object-fit: cover; }
-.account-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.account-name { font-weight: 800; font-size: 13.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.account-status { font-size: 11.5px; color: var(--text-dim); display: flex; align-items: center; gap: 5px; }
 .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 8px var(--accent-glow); }
-.chevron { width: 18px; height: 18px; fill: var(--text-dim); margin-left: auto; }
 
 /* ─────────────── КОНТЕНТ ─────────────── */
 .content { overflow-y: auto; padding: 28px 34px 40px; position: relative; }
@@ -163,6 +161,39 @@ body {
 }
 
 .pixel { font-family: var(--font-pixel); }
+
+/* ─────────────── ВЕРХНЯЯ ПАНЕЛЬ ─────────────── */
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  margin-bottom: 22px; position: relative; z-index: 40;
+}
+.topbar-title { font-family: var(--font-head); font-weight: 800; font-size: 22px; }
+.topbar-account { position: relative; }
+
+.account-btn {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  padding: 8px 14px 8px 8px; cursor: pointer; color: var(--text);
+  font-family: var(--font-body); font-weight: 800; font-size: 13.5px;
+  backdrop-filter: blur(14px); transition: .2s;
+}
+.account-btn:hover, .account-btn.open { border-color: color-mix(in srgb, var(--accent) 55%, transparent); }
+.account-btn-ava { width: 32px; height: 32px; border-radius: 9px; object-fit: cover; }
+.account-btn svg { width: 17px; height: 17px; fill: var(--text-dim); transition: .2s; }
+.account-btn.open svg { transform: rotate(180deg); }
+
+.dropdown-right { left: auto; right: 0; min-width: 240px; }
+.dropdown-down { bottom: auto; top: calc(100% + 8px); }
+.dropdown-down.open { animation: dropDownIn .18s ease; }
+@keyframes dropDownIn { from { opacity: 0; transform: translateY(-6px); } }
+
+.dropdown-head {
+  padding: 10px 12px 8px; font-size: 10.5px; font-weight: 800;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--text-dim);
+}
+.dropdown-divider { height: 1px; background: var(--line); margin: 5px 8px; }
+.dropdown-item.danger:hover { background: rgba(251,113,133,.1); }
+.dropdown-item.danger span { color: #fb7185; }
 
 /* ─────────────── ГЛАВНАЯ · HERO ─────────────── */
 .hero { position: relative; overflow: hidden; min-height: 420px; display: flex; flex-direction: column; justify-content: flex-end; }
@@ -188,7 +219,7 @@ body {
 
 /* Панель запуска */
 .launch-bar {
-  position: relative; display: grid; grid-template-columns: 1fr 1fr auto; gap: 14px; align-items: end;
+  position: relative; display: grid; grid-template-columns: minmax(240px, 380px) auto; gap: 14px; align-items: end;
   margin: 18px 26px 26px; padding: 16px;
   background: rgba(10, 15, 21, .78); border: 1px solid var(--line);
   border-radius: 16px; backdrop-filter: blur(16px);
@@ -502,10 +533,95 @@ input[type="range"]::-moz-range-thumb {
 .toast-text b { display: block; font-size: 13.5px; }
 .toast-text span { font-size: 12px; color: var(--text-dim); }
 
+/* ─────────────── ЭКРАН АВТОРИЗАЦИИ ─────────────── */
+.auth-screen {
+  position: fixed; inset: 0; z-index: 200;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; overflow: hidden;
+}
+.auth-screen.hidden { animation: authOut .45s ease forwards; }
+@keyframes authOut { to { opacity: 0; transform: scale(1.04); visibility: hidden; } }
+.auth-bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; animation: heroZoom 30s ease-in-out infinite alternate; }
+.auth-shade {
+  position: absolute; inset: 0;
+  background: rgba(6, 10, 15, .6); backdrop-filter: blur(14px) saturate(1.2);
+}
+.auth-card {
+  position: relative; width: 100%; max-width: 420px;
+  background: rgba(13, 19, 28, .88); border: 1px solid var(--line);
+  border-radius: 24px; padding: 34px 34px 30px;
+  backdrop-filter: blur(24px); box-shadow: 0 30px 90px rgba(0,0,0,.6);
+  animation: authIn .5s cubic-bezier(.2, .9, .3, 1.15);
+}
+@keyframes authIn { from { opacity: 0; transform: translateY(26px) scale(.97); } }
+.auth-card.shake { animation: shake .4s ease; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-9px); }
+  40%, 80% { transform: translateX(9px); }
+}
+.auth-brand { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-bottom: 24px; }
+.auth-brand img { width: 74px; height: 74px; border-radius: 20px; box-shadow: 0 0 34px var(--accent-glow); margin-bottom: 8px; }
+.auth-logo-text { font-family: var(--font-head); font-weight: 800; font-size: 21px; }
+.auth-logo-text span { color: var(--accent); }
+.auth-logo-sub { font-size: 9px; letter-spacing: .3em; color: var(--text-dim); }
+
+.auth-tabs {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4px;
+  background: rgba(255,255,255,.05); border: 1px solid var(--line);
+  border-radius: 13px; padding: 4px; margin-bottom: 22px;
+}
+.auth-tab {
+  padding: 11px; border: 0; border-radius: 10px; background: transparent;
+  color: var(--text-dim); font-family: var(--font-body); font-weight: 800; font-size: 13.5px;
+  cursor: pointer; transition: .2s;
+}
+.auth-tab.active { background: var(--accent); color: #04241a; box-shadow: 0 4px 16px var(--accent-glow); }
+
+.auth-form { display: flex; flex-direction: column; gap: 14px; }
+.auth-field { display: flex; flex-direction: column; gap: 7px; }
+.auth-field span { font-size: 11px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; color: var(--text-dim); }
+.auth-field input {
+  background: rgba(255,255,255,.05); border: 1px solid var(--line); border-radius: 12px;
+  color: var(--text); font-family: var(--font-body); font-weight: 600; font-size: 14.5px;
+  padding: 13px 15px; outline: 0; transition: .2s;
+}
+.auth-field input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+.auth-field input::placeholder { color: rgba(139,152,168,.55); }
+
+.auth-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 20px; }
+.auth-check { display: flex; align-items: center; gap: 8px; font-size: 12.5px; font-weight: 600; color: var(--text-dim); cursor: pointer; }
+.auth-check input { display: none; }
+.auth-check i {
+  width: 17px; height: 17px; border-radius: 5px; border: 1.5px solid rgba(255,255,255,.25);
+  display: inline-block; position: relative; transition: .15s; flex-shrink: 0;
+}
+.auth-check input:checked + i { background: var(--accent); border-color: var(--accent); }
+.auth-check input:checked + i::after {
+  content: ""; position: absolute; left: 4.5px; top: 1.5px; width: 4px; height: 8px;
+  border: solid #04241a; border-width: 0 2.5px 2.5px 0; transform: rotate(42deg);
+}
+.auth-err { font-size: 12px; font-weight: 700; color: #fb7185; }
+.auth-submit { justify-content: center; width: 100%; margin-top: 4px; }
+
+.auth-divider { display: flex; align-items: center; gap: 14px; margin: 22px 0 16px; color: var(--text-dim); font-size: 11.5px; font-weight: 700; }
+.auth-divider::before, .auth-divider::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+
+.auth-alt { display: flex; flex-direction: column; gap: 9px; }
+.btn-alt {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  padding: 12.5px; border-radius: 12px; cursor: pointer;
+  background: rgba(255,255,255,.05); border: 1px solid var(--line);
+  color: var(--text); font-family: var(--font-body); font-weight: 700; font-size: 13.5px;
+  transition: .2s; width: 100%;
+}
+.btn-alt svg { width: 18px; height: 18px; fill: currentColor; }
+.btn-alt:hover { border-color: color-mix(in srgb, var(--accent) 50%, transparent); background: var(--accent-soft); }
+
 /* ─────────────── АДАПТИВ ─────────────── */
 @media (max-width: 1120px) {
   .app { grid-template-columns: 86px 1fr; }
-  .brand-text, .nav-item span, .account-info, .chevron { display: none; }
+  .brand-text, .nav-item span, .logout-btn span { display: none; }
   .sidebar { padding: 22px 12px; align-items: center; }
   .nav-item { justify-content: center; padding: 13px; }
   .nav-item.active::before { left: -12px; }
@@ -513,4 +629,5 @@ input[type="range"]::-moz-range-thumb {
   .play-layout, .news-grid, .settings-grid { grid-template-columns: 1fr; }
   .stats-row { grid-template-columns: repeat(2, 1fr); }
   .launch-bar { grid-template-columns: 1fr; }
+  .account-btn-name { display: none; }
 }

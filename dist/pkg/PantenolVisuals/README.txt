@@ -1,7 +1,10 @@
-PantenolVisuals Launcher v2.4.1 (Linux)
+PantenolVisuals Launcher v2.4.2 (Linux)
 
 ЗАПУСК:
-  1) Дважды кликните launch.sh ИЛИ выполните в терминале: ./launch.sh
-  2) Либо просто откройте index.html в любом браузере.
+  chmod +x launch.sh && ./launch.sh
+  (либо просто откройте index.html в браузере)
+
+АВТООБНОВЛЕНИЕ:
+  launch.sh при каждом запуске подтягивает свежую версию с GitHub.
 
 ВКЛАДКИ: Главная · Играть · Моды · Магазин · Настройки
