@@ -125,7 +125,7 @@ function enterLauncher(user) {
   authScreen.classList.add("hidden");
   setTimeout(() => { authScreen.style.display = "none"; }, 480);
   app.hidden = false;
-  toast(`Привет, ${user.name}! 👋`, user.type === "Оффлайн" ? "Оффлайн-режим активен" : "Сессия восстановлена", "👤");
+  toast(`Привет, ${user.name}! 👋`, "Pantenol ID · приятной игры", "👤");
 }
 
 /* ── Подстраницы: Вход ⇄ Регистрация (отдельные экраны) ── */
@@ -178,7 +178,7 @@ $("#formRegister").addEventListener("submit", (e) => {
   const errEl = $("#regErr");
 
   if (!/^\w{3,16}$/.test(nick)) return authError(errEl, card, "Ник: 3–16 латинских букв, цифр или _");
-  if (pass.length < 6) return authError(errEl, card, "Пароль короче 6 символов");
+  if (pass.length < 8) return authError(errEl, card, "Пароль короче 8 символов");
   if (pass !== pass2) return authError(errEl, card, "Пароли не совпадают");
   const users = store.users;
   if (users[nick]) return authError(errEl, card, "Этот ник уже занят");
@@ -191,15 +191,8 @@ $("#formRegister").addEventListener("submit", (e) => {
   enterLauncher({ name: nick, type: "Pantenol ID" });
 });
 
-/* Microsoft — мок OAuth */
-$("#btnMicrosoft").addEventListener("click", () => {
-  toast("Microsoft OAuth", "Окно авторизации откроется в браузере (демо)", "🪟");
-});
-
-/* Оффлайн-режим */
-$("#btnGuest").addEventListener("click", () => {
-  enterLauncher({ name: "Гость", type: "Оффлайн" });
-});
+/* Вход только через внутреннюю систему аккаунтов Pantenol ID:
+   оффлайн-режим и сторонние OAuth отключены. */
 
 /* ───────── Кнопка «Аккаунт» справа сверху ───────── */
 function applyAccount() {
