@@ -1,7 +1,12 @@
 #!/bin/bash
 # ═══════════════════════════════════════════════════════
-#  PantenolVisuals Launcher — установка одной командой
+#  PantenolVisuals Launcher — установка одной командой:
 #  curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/arena/bc63aeac-pantenolvisuals/install.sh | bash
+#
+#  После установки лаунчер:
+#   · открывается как ОТДЕЛЬНОЕ ПРИЛОЖЕНИЕ (своё окно)
+#   · появляется в меню приложений Linux с иконкой
+#   · обновляется автоматически при каждом запуске
 # ═══════════════════════════════════════════════════════
 set -e
 
@@ -36,10 +41,32 @@ fi
 
 chmod +x "$DEST/launch.sh"
 
+# ── Ярлык в меню приложений Linux ──
+APPS="$HOME/.local/share/applications"
+ICONS="$HOME/.local/share/icons"
+mkdir -p "$APPS" "$ICONS"
+cp "$DEST/assets/logo.png" "$ICONS/pantenolvisuals.png"
+cat > "$APPS/pantenolvisuals.desktop" << DESKTOP
+[Desktop Entry]
+Name=PantenolVisuals
+Comment=Minecraft Launcher
+Exec=$DEST/launch.sh
+Icon=pantenolvisuals
+Terminal=false
+Type=Application
+Categories=Game;
+StartupWMClass=PantenolVisuals
+DESKTOP
+update-desktop-database "$APPS" 2>/dev/null || true
+echo "✔ Ярлык добавлен в меню приложений (категория «Игры»)"
+
 echo ""
-echo "✔ Готово! Лаунчер в папке: $DEST"
-echo "  Запуск:        $DEST/launch.sh"
-echo "  (каждый запуск автоматически подтягивает обновления с GitHub)"
+echo "✔ Готово! Лаунчер: $DEST"
+echo "  Запуск:   из меню приложений или  $DEST/launch.sh"
+echo "  Обновления подтягиваются с GitHub при каждом запуске."
+echo ""
+echo "  Опционально (нативное окно через Electron):"
+echo "    cd $DEST && npm install && npm start"
 echo ""
 
 "$DEST/launch.sh"
