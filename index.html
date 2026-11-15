@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PantenolVisuals — Лаунчер</title>
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800&family=Manrope:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+<!-- Фоновые декоративные элементы -->
+<div class="bg-fx">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="grid-overlay"></div>
+  <div class="cube c1"></div>
+  <div class="cube c2"></div>
+  <div class="cube c3"></div>
+</div>
+
+<div class="app">
+
+  <!-- ═══════════ БОКОВАЯ ПАНЕЛЬ ═══════════ -->
+  <aside class="sidebar">
+    <div class="brand">
+      <img src="assets/logo.png" alt="PantenolVisuals" class="brand-logo">
+      <div class="brand-text">
+        <span class="brand-name">Pantenol<span>Visuals</span></span>
+        <span class="brand-sub">LAUNCHER · LINUX</span>
+      </div>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-item active" data-tab="home">
+        <svg viewBox="0 0 24 24"><path d="M3 11.5 12 4l9 7.5v8a1.5 1.5 0 0 1-1.5 1.5H14v-6h-4v6H4.5A1.5 1.5 0 0 1 3 19.5z"/></svg>
+        <span>Главная</span>
+      </button>
+      <button class="nav-item" data-tab="play">
+        <svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>
+        <span>Играть</span>
+      </button>
+      <button class="nav-item" data-tab="mods">
+        <svg viewBox="0 0 24 24"><path d="M12 2 3 7v10l9 5 9-5V7zm0 2.3 6.5 3.6L12 11.5 5.5 7.9zM5 9.6l6 3.3v6.9l-6-3.3zm14 0v6.9l-6 3.3v-6.9z"/></svg>
+        <span>Моды</span>
+        <em class="badge" id="modsBadge">6</em>
+      </button>
+      <button class="nav-item" data-tab="shop">
+        <svg viewBox="0 0 24 24"><path d="M4 4h2l2.6 11.2a2 2 0 0 0 2 1.6h6.9a2 2 0 0 0 2-1.6L21 8H7.1M10 21a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm8 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+        <span>Магазин</span>
+        <em class="badge badge-cart" id="cartBadge" hidden>0</em>
+      </button>
+      <button class="nav-item" data-tab="settings">
+        <svg viewBox="0 0 24 24"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5zm9 3.5-.1 1.2 2 1.6-2 3.4-2.4-.9a8 8 0 0 1-2 1.2L16 21H8l-.5-2.6a8 8 0 0 1-2-1.2l-2.4.9-2-3.4 2-1.6a8.3 8.3 0 0 1 0-2.2l-2-1.6 2-3.4 2.4.9a8 8 0 0 1 2-1.2L8 3h8l.5 2.6a8 8 0 0 1 2 1.2l2.4-.9 2 3.4-2 1.6z"/></svg>
+        <span>Настройки</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="account-chip" id="accountChip">
+        <img src="assets/avatar.png" alt="avatar" class="account-ava">
+        <div class="account-info">
+          <span class="account-name" id="accountName">Steve_RU</span>
+          <span class="account-status"><i class="dot"></i> Онлайн</span>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24"><path d="m7 10 5 5 5-5z"/></svg>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ═══════════ ОСНОВНОЙ КОНТЕНТ ═══════════ -->
+  <main class="content">
+
+    <!-- ─────── ГЛАВНАЯ ─────── -->
+    <section class="page active" id="page-home">
+      <div class="hero card">
+        <img src="assets/bg-hero.jpg" class="hero-bg" alt="">
+        <div class="hero-shade"></div>
+        <div class="hero-inner">
+          <span class="hero-tag pixel">SEASON II · ОБНОВЛЕНИЕ 2.4</span>
+          <h1 class="hero-title">Твой Minecraft<br><span>красивее, чем когда-либо</span></h1>
+          <p class="hero-desc">Шейдеры, оптимизация и эксклюзивные ресурспаки — всё в одном лаунчере для Linux.</p>
+        </div>
+
+        <!-- Панель запуска -->
+        <div class="launch-bar">
+          <div class="launch-select" id="versionSelect">
+            <label>Релиз</label>
+            <button class="select-btn" id="versionBtn">
+              <span class="select-value" id="versionValue">1.21.3 · Fabric</span>
+              <svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5z"/></svg>
+            </button>
+            <div class="dropdown" id="versionDropdown"></div>
+          </div>
+
+          <div class="launch-select" id="accountSelect">
+            <label>Аккаунт</label>
+            <button class="select-btn" id="accountBtn">
+              <span class="select-value" id="accountValue">Steve_RU · Лицензия</span>
+              <svg viewBox="0 0 24 24"><path d="m7 10 5 5 5-5z"/></svg>
+            </button>
+            <div class="dropdown" id="accountDropdown"></div>
+          </div>
+
+          <button class="btn-play" id="homePlayBtn">
+            <svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>
+            ИГРАТЬ
+          </button>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat card">
+          <span class="stat-num" data-count="148">0</span>
+          <span class="stat-label">FPS с оптимизацией</span>
+          <span class="stat-trend up">▲ +62%</span>
+        </div>
+        <div class="stat card">
+          <span class="stat-num" data-count="26">0</span>
+          <span class="stat-label">Модов установлено</span>
+        </div>
+        <div class="stat card">
+          <span class="stat-num" data-count="3120">0</span>
+          <span class="stat-label">Игроков онлайн</span>
+          <span class="stat-trend up">▲ сейчас</span>
+        </div>
+        <div class="stat card">
+          <span class="stat-num" data-count="12">0</span>
+          <span class="stat-label">Часов на этой неделе</span>
+        </div>
+      </div>
+
+      <h2 class="section-title">Новости и события</h2>
+      <div class="news-grid">
+        <article class="news-card card">
+          <img src="assets/news-update.jpg" alt="">
+          <div class="news-body">
+            <span class="news-tag">ОБНОВЛЕНИЕ</span>
+            <h3>Геодные пещеры и поддержка 1.21.3</h3>
+            <p>Новые кристальные биомы, Iris 1.8 из коробки и автоподбор аллокации памяти под вашу систему.</p>
+            <span class="news-date">14 ноября 2026</span>
+          </div>
+        </article>
+        <article class="news-card card">
+          <img src="assets/news-event.jpg" alt="">
+          <div class="news-body">
+            <span class="news-tag news-tag-alt">СОБЫТИЕ</span>
+            <h3>Зимний ивент на Pantenol SMP</h3>
+            <p>Снежная деревня, новогодние квесты и розыгрыш ресурспака «Фотон» среди участников.</p>
+            <span class="news-date">1 декабря 2026</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- ─────── ИГРАТЬ ─────── -->
+    <section class="page" id="page-play">
+      <div class="play-layout">
+        <div class="play-main card">
+          <div class="play-banner">
+            <img src="assets/bg-hero.jpg" alt="">
+            <div class="play-banner-shade"></div>
+            <div class="play-banner-info">
+              <span class="pixel play-ver-label" id="playVersionLabel">1.21.3</span>
+              <span class="play-loader" id="playLoaderLabel">Fabric · Iris · Sodium</span>
+            </div>
+          </div>
+
+          <div class="play-actions">
+            <button class="btn-play btn-huge" id="bigPlayBtn">
+              <svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>
+              <span id="bigPlayText">ИГРАТЬ</span>
+            </button>
+            <div class="progress-wrap" id="progressWrap" hidden>
+              <div class="progress-info"><span id="progressStage">Подготовка…</span><span id="progressPct">0%</span></div>
+              <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+            </div>
+          </div>
+
+          <div class="play-meta">
+            <div class="meta-item"><label>Выделено RAM</label><span id="metaRam">8 ГБ</span></div>
+            <div class="meta-item"><label>Java</label><span>OpenJDK 21</span></div>
+            <div class="meta-item"><label>Состояние</label><span class="ok">✓ Файлы проверены</span></div>
+          </div>
+        </div>
+
+        <div class="play-side">
+          <h2 class="section-title">Быстрые серверы</h2>
+          <div class="server-list" id="serverList"></div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Установленные версии</h2>
+      <div class="version-grid" id="versionGrid"></div>
+    </section>
+
+    <!-- ─────── МОДЫ ─────── -->
+    <section class="page" id="page-mods">
+      <div class="mods-head">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.8l-.3-.3a6.5 6.5 0 1 0-.7.7l.3.3v.8l5 5 1.5-1.5zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>
+          <input type="text" id="modSearch" placeholder="Поиск по модам…">
+        </div>
+        <div class="chips" id="modChips">
+          <button class="chip active" data-cat="all">Все</button>
+          <button class="chip" data-cat="perf">Оптимизация</button>
+          <button class="chip" data-cat="shaders">Шейдеры</button>
+          <button class="chip" data-cat="pvp">PvP</button>
+          <button class="chip" data-cat="hud">HUD</button>
+          <button class="chip" data-cat="world">Мир</button>
+        </div>
+      </div>
+      <div class="mod-list" id="modList"></div>
+    </section>
+
+    <!-- ─────── МАГАЗИН ─────── -->
+    <section class="page" id="page-shop">
+      <div class="shop-featured card">
+        <img src="assets/shop-blogger.jpg" alt="">
+        <div class="shop-featured-shade"></div>
+        <div class="shop-featured-info">
+          <span class="news-tag">КОНФИГ БЛОГЕРА</span>
+          <h2>Конфиг «Как у ФиксПэла»</h2>
+          <p>Личная сборка настроек: сенса, HUD, звуки и цвета интерфейса — как в последних видео.</p>
+          <div class="featured-row">
+            <span class="price">349 ₽</span>
+            <button class="btn-buy" data-buy="cfg-fixpal">Купить</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="chips" id="shopChips">
+        <button class="chip active" data-cat="all">Все</button>
+        <button class="chip" data-cat="rp">Ресурспаки</button>
+        <button class="chip" data-cat="blogger">Конфиги блогеров</button>
+        <button class="chip" data-cat="admin">Конфиги админов</button>
+      </div>
+
+      <div class="shop-grid" id="shopGrid"></div>
+    </section>
+
+    <!-- ─────── НАСТРОЙКИ ─────── -->
+    <section class="page" id="page-settings">
+      <div class="settings-grid">
+
+        <div class="card settings-card">
+          <h3>Игра</h3>
+          <div class="setting-row setting-col">
+            <div class="setting-text">
+              <span class="setting-name">Выделяемая память (RAM)</span>
+              <span class="setting-desc">Больше памяти — стабильнее моды и шейдеры</span>
+            </div>
+            <div class="ram-row">
+              <input type="range" id="ramSlider" min="2" max="16" step="1" value="8">
+              <span class="ram-value" id="ramValue">8 ГБ</span>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Разрешение окна</span>
+              <span class="setting-desc">Для оконного режима</span>
+            </div>
+            <select class="field">
+              <option>1920 × 1080</option>
+              <option>2560 × 1440</option>
+              <option>1280 × 720</option>
+            </select>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Полноэкранный режим</span>
+              <span class="setting-desc">Запускать игру на весь экран</span>
+            </div>
+            <label class="switch"><input type="checkbox"><i></i></label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Шейдеры Iris при запуске</span>
+              <span class="setting-desc">Complementary Reimagined по умолчанию</span>
+            </div>
+            <label class="switch"><input type="checkbox" checked><i></i></label>
+          </div>
+        </div>
+
+        <div class="card settings-card">
+          <h3>Лаунчер</h3>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Акцентный цвет</span>
+              <span class="setting-desc">Тема интерфейса PantenolVisuals</span>
+            </div>
+            <div class="accent-picker" id="accentPicker">
+              <button class="accent active" style="--a:#34d399" data-accent="#34d399"></button>
+              <button class="accent" style="--a:#a78bfa" data-accent="#a78bfa"></button>
+              <button class="accent" style="--a:#38bdf8" data-accent="#38bdf8"></button>
+              <button class="accent" style="--a:#fb7185" data-accent="#fb7185"></button>
+              <button class="accent" style="--a:#fbbf24" data-accent="#fbbf24"></button>
+            </div>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Discord Rich Presence</span>
+              <span class="setting-desc">Показывать статус игры в профиле</span>
+            </div>
+            <label class="switch"><input type="checkbox" checked><i></i></label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Автообновление лаунчера</span>
+              <span class="setting-desc">Проверять обновления при старте</span>
+            </div>
+            <label class="switch"><input type="checkbox" checked><i></i></label>
+          </div>
+          <div class="setting-row setting-col">
+            <div class="setting-text">
+              <span class="setting-name">Путь к Java</span>
+              <span class="setting-desc">Оставьте пустым для автоопределения</span>
+            </div>
+            <input type="text" class="field field-wide" value="/usr/lib/jvm/java-21-openjdk/bin/java">
+          </div>
+        </div>
+
+        <div class="card settings-card settings-about">
+          <img src="assets/logo.png" alt="">
+          <div>
+            <h3>PantenolVisuals</h3>
+            <p>Версия лаунчера 2.4.1 · Сборка для Linux (AppImage / Flatpak)</p>
+            <p class="dim">Сделано с любовью к кубам. Не аффилировано с Mojang AB.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
