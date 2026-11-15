@@ -23,69 +23,85 @@
   <div class="cube c3"></div>
 </div>
 
-<!-- ═══════════ ЭКРАН ВХОДА / РЕГИСТРАЦИИ ═══════════ -->
+<!-- ═══════════ ЭКРАН АВТОРИЗАЦИИ: отдельные подстраницы ═══════════ -->
 <div class="auth-screen" id="authScreen" style="display:none">
   <img src="assets/bg-hero.jpg" class="auth-bg" alt="">
   <div class="auth-shade"></div>
 
-  <div class="auth-card" id="authCard">
-    <div class="auth-brand">
-      <img src="assets/logo.png" alt="">
-      <span class="auth-logo-text">Pantenol<span>Visuals</span></span>
-      <span class="auth-logo-sub">MINECRAFT LAUNCHER · LINUX</span>
-    </div>
-
-    <div class="auth-tabs">
-      <button type="button" class="auth-tab active" id="tabLogin">Вход</button>
-      <button type="button" class="auth-tab" id="tabRegister">Регистрация</button>
-    </div>
-
-    <!-- Форма входа -->
-    <form class="auth-form" id="formLogin" novalidate>
-      <label class="auth-field">
-        <span>Никнейм</span>
-        <input type="text" id="loginNick" placeholder="Steve_RU" autocomplete="username">
-      </label>
-      <label class="auth-field">
-        <span>Пароль</span>
-        <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
-      </label>
-      <div class="auth-row">
-        <label class="auth-check"><input type="checkbox" id="loginRemember" checked><i></i> Запомнить меня</label>
-        <span class="auth-err" id="loginErr"></span>
+  <!-- ═══ Подстраница: ВХОД ═══ -->
+  <div class="auth-page" id="authPageLogin">
+    <div class="auth-card" id="loginCard">
+      <div class="auth-brand">
+        <img src="assets/logo.png" alt="">
+        <span class="auth-logo-text">Pantenol<span>Visuals</span></span>
+        <span class="auth-logo-sub">MINECRAFT LAUNCHER · LINUX</span>
       </div>
-      <button type="submit" class="btn-play auth-submit">ВОЙТИ</button>
-    </form>
 
-    <!-- Форма регистрации -->
-    <form class="auth-form" id="formRegister" hidden novalidate>
-      <label class="auth-field">
-        <span>Никнейм</span>
-        <input type="text" id="regNick" placeholder="От 3 до 16 символов" autocomplete="username">
-      </label>
-      <label class="auth-field">
-        <span>Пароль</span>
-        <input type="password" id="regPass" placeholder="Минимум 6 символов" autocomplete="new-password">
-      </label>
-      <label class="auth-field">
-        <span>Повторите пароль</span>
-        <input type="password" id="regPass2" placeholder="Ещё раз" autocomplete="new-password">
-      </label>
-      <span class="auth-err" id="regErr"></span>
-      <button type="submit" class="btn-play auth-submit">СОЗДАТЬ АККАУНТ</button>
-    </form>
+      <h2 class="auth-title">С возвращением!</h2>
+      <p class="auth-subtitle">Войдите, чтобы продолжить играть</p>
 
-    <div class="auth-divider"><span>или</span></div>
+      <form class="auth-form" id="formLogin" novalidate>
+        <label class="auth-field">
+          <span>Никнейм</span>
+          <input type="text" id="loginNick" placeholder="Steve_RU" autocomplete="username">
+        </label>
+        <label class="auth-field">
+          <span>Пароль</span>
+          <input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password">
+        </label>
+        <div class="auth-row">
+          <label class="auth-check"><input type="checkbox" id="loginRemember" checked><i></i> Запомнить меня</label>
+          <span class="auth-err" id="loginErr"></span>
+        </div>
+        <button type="submit" class="btn-play auth-submit">ВОЙТИ</button>
+      </form>
 
-    <div class="auth-alt">
-      <button type="button" class="btn-alt" id="btnMicrosoft">
-        <svg viewBox="0 0 24 24"><path d="M3 3h8.6v8.6H3zM12.4 3H21v8.6h-8.6zM3 12.4h8.6V21H3zM12.4 12.4H21V21h-8.6z"/></svg>
-        Войти через Microsoft
-      </button>
-      <button type="button" class="btn-alt" id="btnGuest">
-        <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12zm0 2c-3.6 0-8 1.8-8 5v2h16v-2c0-3.2-4.4-5-8-5z"/></svg>
-        Играть оффлайн
-      </button>
+      <p class="auth-switch">Нет аккаунта? <button type="button" class="auth-link" id="goRegister">Создать</button></p>
+
+      <div class="auth-divider"><span>или</span></div>
+
+      <div class="auth-alt">
+        <button type="button" class="btn-alt" id="btnMicrosoft">
+          <svg viewBox="0 0 24 24"><path d="M3 3h8.6v8.6H3zM12.4 3H21v8.6h-8.6zM3 12.4h8.6V21H3zM12.4 12.4H21V21h-8.6z"/></svg>
+          Войти через Microsoft
+        </button>
+        <button type="button" class="btn-alt" id="btnGuest">
+          <svg viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0-4.5-4.5A4.5 4.5 0 0 0 12 12zm0 2c-3.6 0-8 1.8-8 5v2h16v-2c0-3.2-4.4-5-8-5z"/></svg>
+          Играть оффлайн
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ Подстраница: РЕГИСТРАЦИЯ ═══ -->
+  <div class="auth-page" id="authPageRegister" hidden>
+    <div class="auth-card" id="regCard">
+      <div class="auth-brand auth-brand-small">
+        <img src="assets/logo.png" alt="">
+        <span class="auth-logo-text">Pantenol<span>Visuals</span></span>
+      </div>
+
+      <h2 class="auth-title">Создать аккаунт</h2>
+      <p class="auth-subtitle">Бесплатно, за полминуты</p>
+
+      <form class="auth-form" id="formRegister" novalidate>
+        <label class="auth-field">
+          <span>Никнейм</span>
+          <input type="text" id="regNick" placeholder="От 3 до 16 символов" autocomplete="username">
+        </label>
+        <label class="auth-field">
+          <span>Пароль</span>
+          <input type="password" id="regPass" placeholder="Минимум 6 символов" autocomplete="new-password">
+        </label>
+        <label class="auth-field">
+          <span>Повторите пароль</span>
+          <input type="password" id="regPass2" placeholder="Ещё раз" autocomplete="new-password">
+        </label>
+        <span class="auth-err" id="regErr"></span>
+        <button type="submit" class="btn-play auth-submit">СОЗДАТЬ АККАУНТ</button>
+      </form>
+
+      <p class="auth-switch">Уже есть аккаунт? <button type="button" class="auth-link" id="goLogin">Войти</button></p>
     </div>
   </div>
 </div>
@@ -395,7 +411,7 @@
           <img src="assets/logo.png" alt="">
           <div>
             <h3>PantenolVisuals</h3>
-            <p>Версия лаунчера 2.4.2 · Сборка для Linux (AppImage / Flatpak)</p>
+            <p>Версия лаунчера 2.5.0 · Нативное приложение Electron для Linux</p>
             <p class="dim">Сделано с любовью к кубам. Не аффилировано с Mojang AB.</p>
           </div>
         </div>
@@ -404,6 +420,16 @@
     </section>
 
   </main>
+</div>
+
+<!-- Полоса окна (только в Electron): перетаскивание + кнопки окна, как в Discord -->
+<div class="drag-strip" id="dragStrip">
+  <div class="drag-title"><img src="assets/logo.png" alt=""><span>PantenolVisuals</span></div>
+  <div class="win-controls">
+    <button type="button" id="winMin" title="Свернуть"><svg viewBox="0 0 24 24"><path d="M5 11h14v2H5z"/></svg></button>
+    <button type="button" id="winMax" title="Развернуть"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zm2 2v10h10V7z"/></svg></button>
+    <button type="button" id="winClose" class="win-close" title="Закрыть"><svg viewBox="0 0 24 24"><path d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4L12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></svg></button>
+  </div>
 </div>
 
 <div class="toasts" id="toasts"></div>

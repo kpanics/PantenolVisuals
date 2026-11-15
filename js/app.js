@@ -128,19 +128,20 @@ function enterLauncher(user) {
   toast(`Привет, ${user.name}! 👋`, user.type === "Оффлайн" ? "Оффлайн-режим активен" : "Сессия восстановлена", "👤");
 }
 
-/* Переключение вкладок Вход/Регистрация */
-$("#tabLogin").addEventListener("click", () => {
-  $("#tabLogin").classList.add("active");
-  $("#tabRegister").classList.remove("active");
-  $("#formLogin").hidden = false;
-  $("#formRegister").hidden = true;
-});
-$("#tabRegister").addEventListener("click", () => {
-  $("#tabRegister").classList.add("active");
-  $("#tabLogin").classList.remove("active");
-  $("#formRegister").hidden = false;
-  $("#formLogin").hidden = true;
-});
+/* ── Подстраницы: Вход ⇄ Регистрация (отдельные экраны) ── */
+function showAuthPage(page) {
+  const login = $("#authPageLogin");
+  const reg = $("#authPageRegister");
+  const toRegister = page === "register";
+  reg.hidden = !toRegister;
+  login.hidden = toRegister;
+  const visible = toRegister ? reg : login;
+  visible.style.animation = "none";
+  void visible.offsetWidth; /* перезапуск анимации смены экрана */
+  visible.style.animation = "";
+}
+$("#goRegister").addEventListener("click", () => showAuthPage("register"));
+$("#goLogin").addEventListener("click", () => showAuthPage("login"));
 
 function authError(el, card, msg) {
   el.textContent = msg;
@@ -152,7 +153,7 @@ function authError(el, card, msg) {
 /* Вход */
 $("#formLogin").addEventListener("submit", (e) => {
   e.preventDefault();
-  const card = $("#authCard");
+  const card = $("#loginCard");
   const nick = $("#loginNick").value.trim();
   const pass = $("#loginPass").value;
   const errEl = $("#loginErr");
@@ -170,7 +171,7 @@ $("#formLogin").addEventListener("submit", (e) => {
 /* Регистрация */
 $("#formRegister").addEventListener("submit", (e) => {
   e.preventDefault();
-  const card = $("#authCard");
+  const card = $("#regCard");
   const nick = $("#regNick").value.trim();
   const pass = $("#regPass").value;
   const pass2 = $("#regPass2").value;
@@ -564,6 +565,14 @@ $("#accentPicker").addEventListener("click", (e) => {
   root.setProperty("--accent-glow", color + "73");
   toast("Тема обновлена", "Акцентный цвет применён ко всему лаунчеру", "🎨");
 });
+
+/* ───────── Режим Electron: своё окно как у Discord ───────── */
+if (window.pvWindow) {
+  document.body.classList.add("electron");
+  $("#winMin").addEventListener("click", () => window.pvWindow.minimize());
+  $("#winMax").addEventListener("click", () => window.pvWindow.toggleMaximize());
+  $("#winClose").addEventListener("click", () => window.pvWindow.close());
+}
 
 /* ───────── Старт ───────── */
 renderServers();
