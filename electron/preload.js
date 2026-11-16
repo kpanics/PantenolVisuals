@@ -13,3 +13,10 @@ contextBridge.exposeInMainWorld("pvMods", {
   list: (version) => ipcRenderer.invoke("mods-list", version),
   remove: (opts) => ipcRenderer.invoke("mods-remove", opts),
 });
+
+/* База данных лаунчера — файл на диске (НЕ localStorage):
+   ~/.config/PantenolVisuals/pv-db.json */
+contextBridge.exposeInMainWorld("pvStore", {
+  getAll: () => ipcRenderer.invoke("store-all"),
+  set: (k, v) => ipcRenderer.invoke("store-set", { k, v }),
+});

@@ -2,13 +2,33 @@
    PantenolVisuals — нативное приложение (Electron, frameless)
    Своё окно как у Discord: без рамки ОС и без браузера.
    ══════════════════════════════════════════════════════════ */
-const { app, BrowserWindow, ipcMain, shell } = require("electron");
+const { app, BrowserWindow, ipcMain, shell, Menu } = require("electron");
 const path = require("path");
 const os = require("os");
 const fs = require("fs");
 const https = require("https");
 
 app.setName("PantenolVisuals");
+
+/* Убираем системное меню целиком (File/Edit/View…, вылезает по Alt) */
+Menu.setApplicationMenu(null);
+
+/* ───────── Файл-база данных (вместо localStorage) ───────── */
+const DB_PATH = path.join(app.getPath("userData"), "pv-db.json");
+function readDB() {
+  try { return JSON.parse(fs.readFileSync(DB_PATH, "utf8")); } catch { return {}; }
+}
+function writeDB(db) {
+  fs.mkdirSync(path.dirname(DB_PATH), { recursive: true });
+  fs.writeFileSync(DB_PATH, JSON.stringify(db, null, 2));
+}
+ipcMain.handle("store-all", () => readDB());
+ipcMain.handle("store-set", (_e, { k, v }) => {
+  const db = readDB();
+  if (v === null) delete db[k]; else db[k] = v;
+  writeDB(db);
+  return true;
+});
 
 /* ───────── Установка модов в папку версии ───────── */
 const INSTANCES = path.join(os.homedir(), ".pantenolvisuals", "instances");
@@ -88,6 +108,9 @@ if (!gotLock) {
       shell.openExternal(url);
       return { action: "deny" };
     });
+
+    // Никакой контекстной менюшки по правой кнопке — это приложение
+    win.webContents.on("context-menu", (e) => e.preventDefault());
   }
 
   /* Кнопки окна из интерфейса */

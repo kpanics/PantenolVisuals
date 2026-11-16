@@ -4,10 +4,32 @@
 const $  = (sel) => document.querySelector(sel);
 const $$ = (sel) => document.querySelectorAll(sel);
 
-/* ───────── Утилита хранения ───────── */
+/* ───────── Хранилище ─────────
+   В Electron-приложении данные лежат в ФАЙЛЕ:
+   ~/.config/PantenolVisuals/pv-db.json (без localStorage).
+   В браузерном превью — демо-режим на localStorage. */
+const mem = {};
+const DISK = !!window.pvStore;
+if (DISK) {
+  /* гидратируем кэш из файла БД до любого рендера */
+  try { Object.assign(mem, (await window.pvStore.getAll()) || {}); } catch {}
+}
 const kv = {
-  get(k, d) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch { return d; } },
-  set(k, v) { localStorage.setItem(k, JSON.stringify(v)); },
+  get(k, d) {
+    if (k in mem) return mem[k];
+    if (!DISK) { try { const v = JSON.parse(localStorage.getItem(k)); return v ?? d; } catch { return d; } }
+    return d;
+  },
+  set(k, v) {
+    mem[k] = v;
+    if (DISK) window.pvStore.set(k, v).catch(() => {});
+    else { try { localStorage.setItem(k, JSON.stringify(v)); } catch {} }
+  },
+  del(k) {
+    delete mem[k];
+    if (DISK) window.pvStore.set(k, null).catch(() => {});
+    else { try { localStorage.removeItem(k); } catch {} }
+  },
 };
 
 /* ───────── Данные ───────── */
@@ -80,12 +102,12 @@ const state = {
 };
 state.version = VERSIONS[0];
 
-/* ───────── Аккаунты (localStorage) ───────── */
+/* ───────── Аккаунты (файл БД в приложении / localStorage только в демо-превью) ───────── */
 const store = {
-  get users()    { try { return JSON.parse(localStorage.getItem("pv_users") || "{}"); } catch { return {}; } },
-  set users(v)   { localStorage.setItem("pv_users", JSON.stringify(v)); },
-  get session()  { return localStorage.getItem("pv_session"); },
-  set session(v) { v ? localStorage.setItem("pv_session", v) : localStorage.removeItem("pv_session"); },
+  get users()    { return kv.get("pv_users", {}); },
+  set users(v)   { kv.set("pv_users", v); },
+  get session()  { return kv.get("pv_session", null); },
+  set session(v) { v ? kv.set("pv_session", v) : kv.del("pv_session"); },
 };
 
 function getRank(nick) {
