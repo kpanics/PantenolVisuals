@@ -6,7 +6,7 @@
 
 **Красивый лаунчер Minecraft для Linux — своё окно, своя музыка, свои моды.**
 
-[![Версия](https://img.shields.io/badge/версия-2.6.4-34d399?style=flat-square)](https://github.com/kpanics/PantenolVisuals)
+[![Версия](https://img.shields.io/badge/версия-2.8.0-34d399?style=flat-square)](https://github.com/kpanics/PantenolVisuals)
 [![Платформа](https://img.shields.io/badge/Linux-Electron-a78bfa?style=flat-square)](https://www.electronjs.org/)
 [![Minecraft](https://img.shields.io/badge/Minecraft-Fabric%201.21.11→26.3-fbbf24?style=flat-square)](https://fabricmc.net/)
 [![License](https://img.shields.io/badge/GPL--3.0-license-38bdf8?style=flat-square)](LICENSE)
@@ -41,6 +41,8 @@ irm https://raw.githubusercontent.com/kpanics/PantenolVisuals/main/install.ps1 |
 | 🎵 **Плеер** | встроенный **SoundCloud**: C418, Monstercat, свои ссылки, плейлист, громкость |
 | 👤 **Pantenol ID** | вход и регистрация на отдельных страницах, личный кабинет с покупками |
 | 🛡 **Админ-панель** | для владельца (KPanic): загрузка/удаление ресурспаков, автозагрузка паков игрокам, ранги (Игрок/Медиа/Модератор/Админ), настройки сети |
+| ⬇ **Настоящий Minecraft** | ванильные релизы качаются с официальных серверов Mojang (клиент, библиотеки, ассеты, нативы) и запускаются через Java с выбранным объёмом RAM |
+| 🔄 **Автообновление** | приложение само проверяет GitHub каждые 30 минут, скачивает новую версию в фоне и предлагает перезапуск — как Discord |
 
 ## 🖥 Приложение, а не вкладка браузера
 

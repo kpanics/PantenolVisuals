@@ -298,8 +298,20 @@
 
           <div class="play-meta">
             <div class="meta-item"><label>Выделено RAM</label><span id="metaRam">8 ГБ</span></div>
-            <div class="meta-item"><label>Java</label><span>OpenJDK 21</span></div>
-            <div class="meta-item"><label>Состояние</label><span class="ok">✓ Файлы проверены</span></div>
+            <div class="meta-item"><label>Java</label><span id="metaJava">проверка…</span></div>
+            <div class="meta-item"><label>Состояние</label><span class="ok" id="metaState">✓ Готов</span></div>
+          </div>
+
+          <!-- Настоящая загрузка Minecraft с серверов Mojang -->
+          <div class="vanilla-box">
+            <div class="vanilla-text">
+              <span class="setting-name">Настоящий релиз Minecraft</span>
+              <span class="setting-desc">Качается с официальных серверов Mojang. Пресеты выше — красивые обёртки; здесь — настоящая игра.</span>
+            </div>
+            <div class="vanilla-row">
+              <select class="field" id="vanillaSelect"><option>Загрузка списка…</option></select>
+              <span class="vanilla-status" id="vanillaStatus">…</span>
+            </div>
           </div>
         </div>
 
@@ -483,7 +495,7 @@
           <img src="assets/logo.png" alt="">
           <div>
             <h3>PantenolVisuals</h3>
-            <p>Версия лаунчера 2.7.0 · Нативное приложение Electron (Linux / Windows)</p>
+            <p>Версия лаунчера 2.8.0 · Нативное приложение Electron (Linux / Windows)</p>
             <p class="dim">Сделано с любовью к кубам. Не аффилировано с Mojang AB.</p>
           </div>
         </div>
@@ -592,6 +604,13 @@
     <button type="button" id="winMax" title="Развернуть"><svg viewBox="0 0 24 24"><path d="M5 5h14v14H5zm2 2v10h10V7z"/></svg></button>
     <button type="button" id="winClose" class="win-close" title="Закрыть"><svg viewBox="0 0 24 24"><path d="M6.4 5 12 10.6 17.6 5 19 6.4 13.4 12l5.6 5.6-1.4 1.4L12 13.4 6.4 19 5 17.6 10.6 12 5 6.4z"/></svg></button>
   </div>
+</div>
+
+<!-- Баннер автообновления -->
+<div class="update-banner" id="updateBanner" hidden>
+  <span>✨ Обновление установлено <b id="updateSha"></b></span>
+  <button type="button" class="upd-btn" id="updRestart">Перезапустить</button>
+  <button type="button" class="upd-btn upd-later" id="updLater">Позже</button>
 </div>
 
 <div class="toasts" id="toasts"></div>

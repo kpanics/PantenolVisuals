@@ -450,35 +450,141 @@ const LAUNCH_STAGES = [
   ["Запуск Minecraft…", 100],
 ];
 
+function resetLaunchUi() {
+  state.launching = false;
+  const bigBtn = $("#bigPlayBtn");
+  bigBtn.style.opacity = "";
+  bigBtn.style.pointerEvents = "";
+  $("#bigPlayText").textContent = "ИГРАТЬ";
+  $("#progressWrap").hidden = true;
+}
+
 function launchGame() {
   if (state.launching) return;
   state.launching = true;
-  const wrap = $("#progressWrap"), fill = $("#progressFill");
-  const stageEl = $("#progressStage"), pctEl = $("#progressPct"), bigBtn = $("#bigPlayBtn");
-  wrap.hidden = false;
+  const bigBtn = $("#bigPlayBtn");
+  $("#progressWrap").hidden = false;
   bigBtn.style.opacity = ".55";
   bigBtn.style.pointerEvents = "none";
-  fill.style.width = "0%";
+  $("#progressFill").style.width = "0%";
+
+  if (window.pvMC) {
+    mcLaunchFlow()
+      .catch((e) => toast("Ошибка запуска", String(e && e.message || e), "✕"))
+      .finally(resetLaunchUi);
+    return;
+  }
+  simulateLaunch();
+}
+
+/* Настоящий запуск: скачивание с Mojang + старт java-процесса */
+async function mcLaunchFlow() {
+  const ver = ($("#vanillaSelect") && $("#vanillaSelect").value) || (await pvMC.latest());
+  const name = state.account ? state.account.name : "Player";
+  const ramMb = Math.max(1024, (state.ram || 4) * 1024);
+
+  const installed = await pvMC.status(ver);
+  if (!installed) {
+    $("#bigPlayText").textContent = "СКАЧИВАЮ…";
+    await pvMC.install(ver); /* прогресс приходит через pvMC.onProgress */
+    toast("Minecraft установлен ⬇", `Релиз ${ver} · vanilla · серверы Mojang`, "⬇");
+    updateVanillaStatus();
+  }
+
+  $("#bigPlayText").textContent = "ЗАПУСК…";
+  $("#progressStage").textContent = `JVM (${state.ram || 4} ГБ) · запуск процесса…`;
+  $("#progressPct").textContent = "100%";
+  $("#progressFill").style.width = "100%";
+
+  const res = await pvMC.launch({ version: ver, username: name, ramMb });
+  if (res && res.noJava) {
+    toast("Нужна Java ☕", "sudo apt install openjdk-21-jre — потом перезапустите", "⚠");
+    return;
+  }
+  toast("Игра запущена 🎮", `Minecraft ${ver} · аккаунт ${name} · PID ${res && res.pid ? res.pid : "—"}`, "▶");
+}
+
+/* Симуляция для браузерного превью */
+function simulateLaunch() {
   let stage = 0;
   (function nextStage() {
     if (stage >= LAUNCH_STAGES.length) {
-      state.launching = false;
-      bigBtn.style.opacity = "";
-      bigBtn.style.pointerEvents = "";
-      $("#bigPlayText").textContent = "ИГРАТЬ";
-      wrap.hidden = true;
+      resetLaunchUi();
       const name = state.account ? state.account.name : "Игрок";
-      toast("Игра запущена 🎮", `Minecraft ${state.version.num} · аккаунт ${name}`, "▶");
+      toast("Режим предпросмотра", "Настоящая загрузка работает в десктоп-приложении", "👀");
       return;
     }
     const [label, pct] = LAUNCH_STAGES[stage];
-    stageEl.textContent = label.replace("JVM…", `JVM (${state.ram || 8} ГБ)…`);
-    pctEl.textContent = pct + "%";
-    fill.style.width = pct + "%";
+    $("#progressStage").textContent = label.replace("JVM…", `JVM (${state.ram || 8} ГБ)…`);
+    $("#progressPct").textContent = pct + "%";
+    $("#progressFill").style.width = pct + "%";
     if (stage === LAUNCH_STAGES.length - 1) $("#bigPlayText").textContent = "ЗАПУСК…";
     stage++;
     setTimeout(nextStage, 750 + Math.random() * 500);
   })();
+}
+
+/* ─── Настоящие релизы Minecraft (список с Mojang) ─── */
+async function initVanilla() {
+  const sel = $("#vanillaSelect");
+  if (!sel) return;
+  try {
+    let ids;
+    if (window.pvMC) {
+      ids = await pvMC.versions();
+    } else {
+      const m = await fetch("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json").then((r) => r.json());
+      ids = m.versions.filter((v) => v.type === "release").slice(0, 25).map((v) => v.id);
+    }
+    sel.innerHTML = "";
+    ids.forEach((id, i) => {
+      const o = document.createElement("option");
+      o.value = id;
+      o.textContent = id + (i === 0 ? " · последний" : "");
+      sel.appendChild(o);
+    });
+    sel.addEventListener("change", updateVanillaStatus);
+    updateVanillaStatus();
+  } catch {
+    sel.innerHTML = "<option>Нет сети</option>";
+    $("#vanillaStatus").textContent = "оффлайн";
+    $("#vanillaStatus").className = "vanilla-status warn";
+  }
+}
+
+async function updateVanillaStatus() {
+  const el = $("#vanillaStatus");
+  const ver = $("#vanillaSelect").value;
+  if (!window.pvMC) {
+    el.textContent = "в приложении — настоящая загрузка";
+    el.className = "vanilla-status warn";
+    return;
+  }
+  const ok = await pvMC.status(ver);
+  el.textContent = ok ? "✓ установлен" : "скачается при запуске";
+  el.className = ok ? "vanilla-status ok" : "vanilla-status warn";
+}
+
+/* прогресс установки Minecraft → в красивый прогресс-бар */
+if (window.pvMC) {
+  pvMC.onProgress(({ stage, pct }) => {
+    $("#progressStage").textContent = stage;
+    $("#progressPct").textContent = pct + "%";
+    $("#progressFill").style.width = pct + "%";
+  });
+  pvMC.java().then((has) => {
+    $("#metaJava").textContent = has ? "✓ java найдена" : "⚠ нужна Java";
+  });
+}
+
+/* ─── Баннер автообновления ─── */
+if (window.pvApp) {
+  pvApp.onUpdateReady(({ sha }) => {
+    $("#updateSha").textContent = "#" + sha;
+    $("#updateBanner").hidden = false;
+  });
+  $("#updRestart").addEventListener("click", () => pvApp.restart());
+  $("#updLater").addEventListener("click", () => { $("#updateBanner").hidden = true; });
 }
 
 $("#homePlayBtn").addEventListener("click", () => {
@@ -997,6 +1103,7 @@ document.addEventListener("keydown", (e) => {
 
 $("#mrVer").textContent = state.version.num;
 selectVersion(state.version);
+initVanilla();
 
 const savedSession = store.session;
 if (savedSession && store.users[savedSession]) {

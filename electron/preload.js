@@ -20,3 +20,20 @@ contextBridge.exposeInMainWorld("pvStore", {
   getAll: () => ipcRenderer.invoke("store-all"),
   set: (k, v) => ipcRenderer.invoke("store-set", { k, v }),
 });
+
+/* Minecraft: настоящие версии Mojang, загрузка и запуск игры */
+contextBridge.exposeInMainWorld("pvMC", {
+  versions: () => ipcRenderer.invoke("mc-versions"),
+  latest: () => ipcRenderer.invoke("mc-latest"),
+  status: (v) => ipcRenderer.invoke("mc-status", v),
+  java: () => ipcRenderer.invoke("mc-java"),
+  install: (v) => ipcRenderer.invoke("mc-install", v),
+  launch: (opts) => ipcRenderer.invoke("mc-launch", opts),
+  onProgress: (cb) => ipcRenderer.on("mc-progress", (_e, d) => cb(d)),
+});
+
+/* Автообновление приложения */
+contextBridge.exposeInMainWorld("pvApp", {
+  onUpdateReady: (cb) => ipcRenderer.on("app-update-ready", (_e, d) => cb(d)),
+  restart: () => ipcRenderer.send("app-restart"),
+});

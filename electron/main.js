@@ -7,8 +7,33 @@ const path = require("path");
 const os = require("os");
 const fs = require("fs");
 const https = require("https");
+const mc = require("./minecraft");
+const updater = require("./updater");
 
 app.setName("PantenolVisuals");
+
+/* ───────── Minecraft: настоящая загрузка и запуск ───────── */
+ipcMain.handle("mc-versions", () => mc.listVersions());
+ipcMain.handle("mc-latest", () => mc.latestRelease());
+ipcMain.handle("mc-status", (_e, version) => mc.isInstalled(version));
+ipcMain.handle("mc-java", () => mc.checkJava());
+ipcMain.handle("mc-install", async (e, version) => {
+  await mc.install(version, (p) => e.sender.send("mc-progress", p));
+  return { ok: true };
+});
+ipcMain.handle("mc-launch", async (_e, opts) => {
+  const hasJava = await mc.checkJava();
+  if (!hasJava) return { ok: false, noJava: true };
+  return { ok: true, ...(await mc.launch(opts)) };
+});
+
+/* ───────── Автообновление приложения ───────── */
+ipcMain.on("app-restart", () => {
+  updater.markRestarted();
+  app.relaunch();
+  app.exit(0);
+});
+ipcMain.on("app-check-update", () => {}); /* пинок — проверка и так по таймеру */
 
 /* Убираем системное меню целиком (File/Edit/View…, вылезает по Alt) */
 Menu.setApplicationMenu(null);
@@ -102,6 +127,10 @@ if (!gotLock) {
 
     win.loadFile(path.join(__dirname, "..", "index.html"));
     win.once("ready-to-show", () => win.show());
+
+    /* автообновление фоном */
+    updater.markRestarted();
+    updater.start(win, app.getAppPath(), app.getPath("userData"));
 
     // Внешние ссылки открываем в системном браузере, а не в окне лаунчера
     win.webContents.setWindowOpenHandler(({ url }) => {
