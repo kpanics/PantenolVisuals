@@ -9,7 +9,7 @@
 cd "$(dirname "$0")"
 DIR="$(pwd)"
 
-BRANCH="arena/bc63aeac-pantenolvisuals"
+BRANCH="main"
 REPO_ZIP="https://codeload.github.com/kpanics/PantenolVisuals/zip/refs/heads/$BRANCH"
 
 EV="33.2.0"
@@ -20,10 +20,13 @@ RT_URL="https://github.com/electron/electron/releases/download/v$EV/electron-v$E
 echo "⟳ PantenolVisuals: проверка обновлений…"
 UPDATED=0
 if [ -d .git ] && command -v git >/dev/null 2>&1; then
+  git config --global --add safe.directory "$DIR" 2>/dev/null || true  # лечит "dubious ownership"
   git remote set-url origin https://github.com/kpanics/PantenolVisuals.git 2>/dev/null || true
   # явный refspec: чинит старые установки, склонированные с --depth 1 -b <ветка>
-  if git fetch -q origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" 2>/dev/null; then
+  if GIT_ERR=$(git fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" 2>&1); then
     git reset --hard FETCH_HEAD -q 2>/dev/null && { echo "✔ Лаунчер обновлён до последней версии"; UPDATED=1; }
+  else
+    echo "⚠ git: $(echo "$GIT_ERR" | tail -1)"
   fi
 fi
 if [ "$UPDATED" = "0" ] && command -v curl >/dev/null 2>&1; then
