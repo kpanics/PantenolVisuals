@@ -980,6 +980,21 @@ if (window.pvWindow) {
 }
 
 /* ───────── Старт ───────── */
+/* Все оверлеи гарантированно закрыты при запуске —
+   личный кабинет открывается ТОЛЬКО по клику в меню аккаунта */
+closeProfile();
+$("#profileModal").hidden = true;
+closeAllDropdowns();
+
+/* Escape закрывает модалку, выпадашки и плейлист плеера */
+document.addEventListener("keydown", (e) => {
+  if (e.key !== "Escape") return;
+  if (!$("#profileModal").hidden) closeProfile();
+  closeAllDropdowns();
+  const pop = document.getElementById("scPopover");
+  if (pop) pop.classList.remove("open");
+});
+
 $("#mrVer").textContent = state.version.num;
 selectVersion(state.version);
 
