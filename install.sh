@@ -12,7 +12,7 @@
 set -e
 
 REPO="https://github.com/kpanics/PantenolVisuals.git"
-BRANCH="arena/bc63aeac-pantenolvisuals"
+BRANCH="main"
 DEST="$HOME/PantenolVisuals"
 EV="33.2.0"
 RT_URL="https://github.com/electron/electron/releases/download/v$EV/electron-v$EV-linux-x64.zip"
@@ -25,6 +25,7 @@ echo "╚═══════════════════════�
 if command -v git >/dev/null 2>&1; then
   if [ -d "$DEST/.git" ]; then
     echo "⟳ Найдена установка — обновляю…"
+    git config --global --add safe.directory "$DEST" 2>/dev/null || true
     git -C "$DEST" remote set-url origin "$REPO" 2>/dev/null || true
     # явный refspec лечит старые single-branch клоны
     git -C "$DEST" fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" -q
