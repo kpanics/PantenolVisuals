@@ -1,27 +1,58 @@
+<div align="center">
+
+<img src="assets/logo.png" width="120" alt="PantenolVisuals logo">
+
 # PantenolVisuals
 
-Красивый лаунчер Minecraft для Linux: вкладки **Главная / Играть / Моды / Магазин / Настройки**, экран входа и регистрации, выбор релизов и аккаунтов, магазин ресурспаков и конфигов блогеров/админов.
+**Красивый лаунчер Minecraft для Linux — своё окно, своя музыка, свои моды.**
 
-## Установка одной командой
+[![Версия](https://img.shields.io/badge/версия-2.6.3-34d399?style=flat-square)](https://github.com/kpanics/PantenolVisuals)
+[![Платформа](https://img.shields.io/badge/Linux-Electron-a78bfa?style=flat-square)](https://www.electronjs.org/)
+[![Minecraft](https://img.shields.io/badge/Minecraft-Fabric%201.21.11→26.3-fbbf24?style=flat-square)](https://fabricmc.net/)
+[![License](https://img.shields.io/badge/GPL--3.0-license-38bdf8?style=flat-square)](LICENSE)
+
+<img src="assets/bg-hero.jpg" width="100%" alt="">
+
+</div>
+
+## 🚀 Установка одной командой
 
 ```bash
-curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/arena/bc63aeac-pantenolvisuals/install.sh | bash
+curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/main/install.sh | bash
 ```
 
-Или через git:
+Установщик сам скачает лаунчер, **встроенный движок Electron** (~90 МБ, один раз — как у Discord) и добавит ярлык в меню приложений. Дальше обновления подтягиваются с GitHub автоматически при каждом запуске.
 
-```bash
-git clone -b arena/bc63aeac-pantenolvisuals https://github.com/kpanics/PantenolVisuals.git
-cd PantenolVisuals
-./launch.sh
+## ✨ Возможности
+
+| | |
+|---|---|
+| 🏠 **Главная** | выбор релиза **Fabric 1.21.11 → 26.3**, статистика, новости сети |
+| ▶ **Играть** | анимированный запуск, быстрые серверы с пингом, карточки версий |
+| 🌐 **Серверы** | аккаунт Pantenol ID работает онлайн на всех серверах сети, добавление своих серверов |
+| 🧩 **Моды** | живой каталог **Modrinth** (только Fabric под выбранную версию), установка `.jar` прямо в папку `mods` выбранной версии |
+| 🛒 **Магазин** | ресурспаки, конфиги блогеров и админов, **бесплатные кастомные 3D-модели** |
+| 🎵 **Плеер** | встроенный **SoundCloud**: C418, Monstercat, свои ссылки, плейлист, громкость |
+| 👤 **Pantenol ID** | вход и регистрация на отдельных страницах, личный кабинет с покупками |
+| 🛡 **Админ-панель** | для владельца (KPanic): загрузка/удаление ресурспаков, автозагрузка паков игрокам, ранги (Игрок/Медиа/Модератор/Админ), настройки сети |
+
+## 🖥 Приложение, а не вкладка браузера
+
+Окно без рамки ОС со своими кнопками «свернуть / развернуть / закрыть», без системного меню и контекстных меню браузера. Данные (аккаунты, покупки, ранги, паки) хранятся в файле `~/.config/PantenolVisuals/pv-db.json` — никакого localStorage.
+
+## 📦 Структура
+
+```
+├── index.html        # интерфейс лаунчера
+├── css/styles.css    # дизайн-система
+├── js/app.js         # логика (модули ES)
+├── js/player.js      # SoundCloud-плеер
+├── electron/         # нативное окно + IPC (моды, база данных)
+├── assets/           # сгенерированная графика
+├── install.sh        # установка в одну команду
+└── launch.sh         # запуск + автообновление
 ```
 
-`launch.sh` при каждом запуске автоматически подтягивает свежую версию с GitHub — обновления применяются сами.
-
-## Отдельное приложение, как у Discord
-
-`launch.sh` при первом запуске сам скачивает **встроенный движок Electron** (~90 МБ, один раз) — дальше лаунчер работает как полностью самостоятельное приложение со своим окном без рамки браузера, своими кнопками «свернуть / развернуть / закрыть» и иконкой в панели задач. **Firefox/Chrome не нужен.** `install.sh` добавляет лаунчер в **меню приложений** Linux.
-
-## Стек
-
-HTML/CSS/JS-интерфейс + встроенный рантайм Electron (окно без `<webview>`, своя отрисовка через Chromium внутри приложения).
+<div align="center">
+<sub>Сделано с любовью к кубам. Не аффилировано с Mojang AB.</sub>
+</div>

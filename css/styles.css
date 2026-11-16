@@ -601,7 +601,7 @@ input[type="range"]::-moz-range-thumb {
 
 /* ─────────────── МОДАЛЬНОЕ ОКНО / ЛИЧНЫЙ КАБИНЕТ ─────────────── */
 .modal-shade {
-  position: fixed; inset: 0; z-index: 400;
+  position: fixed; inset: 0; z-index: 620; /* выше оконной полосы Electron (500) */
   background: rgba(4, 7, 11, .7); backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center; padding: 20px;
   animation: fadeIn .2s ease;
