@@ -19,10 +19,11 @@ RT_URL="https://github.com/electron/electron/releases/download/v$EV/electron-v$E
 # ── 1. Автообновление файлов лаунчера ──
 echo "⟳ PantenolVisuals: проверка обновлений…"
 if [ -d .git ] && command -v git >/dev/null 2>&1; then
-  git fetch origin "$BRANCH" -q 2>/dev/null && \
-  git reset --hard "origin/$BRANCH" -q 2>/dev/null && \
-  echo "✔ Лаунчер обновлён до последней версии" || \
-  echo "⚠ Обновление пропущено (нет сети)"
+  if git fetch origin "$BRANCH" -q 2>/dev/null; then
+    git reset --hard "origin/$BRANCH" -q 2>/dev/null && echo "✔ Лаунчер обновлён до последней версии"
+  else
+    echo "⚠ Нет сети — запускаю текущую версию"
+  fi
 elif command -v curl >/dev/null 2>&1; then
   TMP=$(mktemp -d)
   if curl -sL --max-time 20 "$REPO_ZIP" -o "$TMP/pv.zip" && [ -s "$TMP/pv.zip" ]; then

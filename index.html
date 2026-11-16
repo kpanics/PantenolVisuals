@@ -138,6 +138,43 @@
       </button>
     </nav>
 
+    <!-- Встроенный плеер SoundCloud -->
+    <div class="sc-player" id="scPlayer">
+      <div class="sc-top">
+        <img class="sc-cover" id="scCover" src="assets/logo.png" alt="">
+        <div class="sc-meta">
+          <span class="sc-title" id="scTitle">SoundCloud-плеер</span>
+          <span class="sc-artist" id="scArtist">нажмите ▶ для музыки</span>
+        </div>
+        <button type="button" class="sc-list-btn" id="scListBtn" title="Каналы и плейлист">
+          <svg viewBox="0 0 24 24"><path d="M4 6h16v2H4zm0 5h16v2H4zm0 5h10v2H4z"/></svg>
+        </button>
+      </div>
+      <div class="sc-controls">
+        <button type="button" id="scPrev" title="Назад"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zm12.5 0v14L8.5 12z"/></svg></button>
+        <button type="button" class="sc-play" id="scPlay" title="Играть / Пауза">
+          <svg id="scPlayIco" viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>
+        </button>
+        <button type="button" id="scNext" title="Вперёд"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM5.5 5v14l10-7z"/></svg></button>
+        <input type="range" class="sc-vol" id="scVol" min="0" max="100" value="60" title="Громкость">
+      </div>
+      <div class="sc-bar" id="scBar"><i id="scFill"></i></div>
+      <a class="sc-credit" id="scCredit" href="https://soundcloud.com" target="_blank" rel="noopener">▶ слушать на SoundCloud</a>
+
+      <!-- Плейлист и каналы -->
+      <div class="sc-popover" id="scPopover">
+        <div class="sc-pop-head">Каналы</div>
+        <button type="button" class="sc-channel active" data-url="https://soundcloud.com/c418">🎮 C418 · Minecraft (офиц.)</button>
+        <button type="button" class="sc-channel" data-url="https://soundcloud.com/monstercat">🎧 Monstercat · EDM</button>
+        <div class="sc-custom">
+          <input type="text" id="scUrl" placeholder="Своя ссылка soundcloud.com/…">
+          <button type="button" id="scLoad">OK</button>
+        </div>
+        <div class="sc-pop-head">Треки</div>
+        <div class="sc-tracks" id="scTracks"><div class="sc-track-empty">Загрузка списка…</div></div>
+      </div>
+    </div>
+
     <div class="sidebar-footer">
       <button type="button" class="logout-btn" id="logoutBtn">
         <svg viewBox="0 0 24 24"><path d="M10 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5v-2H5V5h5zm6.6 4.4L15 8.8l2.2 2.2H9v2h8.2L15 15.2l1.6 1.4L21 12z"/></svg>
@@ -446,7 +483,7 @@
           <img src="assets/logo.png" alt="">
           <div>
             <h3>PantenolVisuals</h3>
-            <p>Версия лаунчера 2.6.0 · Нативное приложение Electron для Linux</p>
+            <p>Версия лаунчера 2.6.2 · Нативное приложение Electron для Linux</p>
             <p class="dim">Сделано с любовью к кубам. Не аффилировано с Mojang AB.</p>
           </div>
         </div>
@@ -559,6 +596,11 @@
 
 <div class="toasts" id="toasts"></div>
 
+<!-- Скрытый виджет SoundCloud (официальный embed API) -->
+<iframe id="scWidget" title="SoundCloud" allow="autoplay" scrolling="no" frameborder="no"
+        src="" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;left:-9999px"></iframe>
+
 <script type="module" src="js/app.js"></script>
+<script type="module" src="js/player.js"></script>
 </body>
 </html>
