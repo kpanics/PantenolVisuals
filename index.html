@@ -114,6 +114,10 @@
         <svg viewBox="0 0 24 24"><path d="M7 4.5v15l13-7.5z"/></svg>
         <span>Играть</span>
       </button>
+      <button type="button" class="nav-item" data-tab="servers">
+        <svg viewBox="0 0 24 24"><path d="M4 3h16a1.5 1.5 0 0 1 1.5 1.5v4A1.5 1.5 0 0 1 20 10H4A1.5 1.5 0 0 1 2.5 8.5v-4A1.5 1.5 0 0 1 4 3zm0 11h16a1.5 1.5 0 0 1 1.5 1.5v4A1.5 1.5 0 0 1 20 21H4a1.5 1.5 0 0 1-1.5-1.5v-4A1.5 1.5 0 0 1 4 14zm2.2-8.8a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm0 11a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/></svg>
+        <span>Серверы</span>
+      </button>
       <button type="button" class="nav-item" data-tab="mods">
         <svg viewBox="0 0 24 24"><path d="M12 2 3 7v10l9 5 9-5V7zm0 2.3 6.5 3.6L12 11.5 5.5 7.9zM5 9.6l6 3.3v6.9l-6-3.3zm14 0v6.9l-6 3.3v-6.9z"/></svg>
         <span>Моды</span>
@@ -127,6 +131,10 @@
       <button type="button" class="nav-item" data-tab="settings">
         <svg viewBox="0 0 24 24"><path d="M12 8.5A3.5 3.5 0 1 0 12 15.5 3.5 3.5 0 0 0 12 8.5zm9 3.5-.1 1.2 2 1.6-2 3.4-2.4-.9a8 8 0 0 1-2 1.2L16 21H8l-.5-2.6a8 8 0 0 1-2-1.2l-2.4.9-2-3.4 2-3.4 2-1.6a8.3 8.3 0 0 1 0-2.2l-2-1.6 2-3.4 2-3.4 2.4.9a8 8 0 0 1 2-1.2L8 3h8l.5 2.6a8 8 0 0 1 2 1.2l2.4-.9 2 3.4-2 1.6z"/></svg>
         <span>Настройки</span>
+      </button>
+      <button type="button" class="nav-item nav-admin" data-tab="admin" id="navAdmin" hidden>
+        <svg viewBox="0 0 24 24"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5zm-1 5h2v2h-2zm0 3h2v6h-2z"/></svg>
+        <span>Админ</span>
       </button>
     </nav>
 
@@ -268,6 +276,32 @@
       <div class="version-grid" id="versionGrid"></div>
     </section>
 
+    <!-- ─────── СЕРВЕРЫ ─────── -->
+    <section class="page" id="page-servers">
+      <div class="servers-hero card">
+        <img src="assets/bg-hero.jpg" class="servers-hero-bg" alt="">
+        <div class="servers-hero-shade"></div>
+        <div class="servers-hero-inner">
+          <h2>Сервера Pantenol</h2>
+          <p>Ваш Pantenol ID работает на всех серверах сети — аккаунт создаётся <b>онлайн автоматически</b> при первом входе. Никаких регистраций на каждом сервере.</p>
+        </div>
+        <button type="button" class="btn-play" id="btnQuickJoin">
+          <svg viewBox="0 0 24 24"><path d="M13 5.5 19.5 12 13 18.5v-4H4v-7h9z"/></svg>
+          БЫСТРЫЙ ВХОД
+        </button>
+      </div>
+
+      <h2 class="section-title">Официальные и партнёрские</h2>
+      <div class="servers-grid" id="serversGrid"></div>
+
+      <h2 class="section-title">Добавить свой сервер</h2>
+      <form class="card server-add" id="serverAddForm" novalidate>
+        <input type="text" class="field" id="srvName" placeholder="Название сервера" maxlength="28">
+        <input type="text" class="field" id="srvIp" placeholder="IP, например play.myserver.ru">
+        <button type="submit" class="btn-buy">Добавить</button>
+      </form>
+    </section>
+
     <!-- ─────── МОДЫ ─────── -->
     <section class="page" id="page-mods">
       <div class="mods-head">
@@ -285,6 +319,19 @@
         </div>
       </div>
       <div class="mod-list" id="modList"></div>
+
+      <h2 class="section-title">Каталог модов · Modrinth</h2>
+      <div class="mr-head">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><path d="M15.5 14h-.8l-.3-.3a6.5 6.5 0 1 0-.7.7l.3.3v.8l5 5 1.5-1.5zm-6 0a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/></svg>
+          <input type="text" id="mrSearch" placeholder="Поиск по тысячам модов: shaders, minimap, furniture…">
+        </div>
+        <button type="button" class="btn-buy" id="mrGo">Найти</button>
+      </div>
+      <p class="mr-note">Показываются только <b>Fabric</b>-моды совместимые с версией <b id="mrVer">26.3</b>. В приложении установка идёт напрямую в папку <code>mods</code> выбранной версии.</p>
+      <div class="mod-list" id="mrList">
+        <div class="card mr-hint">Введите запрос или нажмите «Найти» — загружу популярное прямо с Modrinth ⚡</div>
+      </div>
     </section>
 
     <!-- ─────── МАГАЗИН ─────── -->
@@ -308,6 +355,7 @@
         <button type="button" class="chip" data-cat="rp">Ресурспаки</button>
         <button type="button" class="chip" data-cat="blogger">Конфиги блогеров</button>
         <button type="button" class="chip" data-cat="admin">Конфиги админов</button>
+        <button type="button" class="chip" data-cat="models">Кастомные модели</button>
       </div>
 
       <div class="shop-grid" id="shopGrid"></div>
@@ -398,7 +446,7 @@
           <img src="assets/logo.png" alt="">
           <div>
             <h3>PantenolVisuals</h3>
-            <p>Версия лаунчера 2.5.0 · Нативное приложение Electron для Linux</p>
+            <p>Версия лаунчера 2.6.0 · Нативное приложение Electron для Linux</p>
             <p class="dim">Сделано с любовью к кубам. Не аффилировано с Mojang AB.</p>
           </div>
         </div>
@@ -406,7 +454,97 @@
       </div>
     </section>
 
+    <!-- ─────── АДМИН-ПАНЕЛЬ (только KPanic) ─────── -->
+    <section class="page" id="page-admin">
+      <div class="admin-banner card">
+        <div class="admin-banner-text">
+          <h2>🛡 Админ-панель</h2>
+          <p>Управление ресурспаками сети, рангами игроков и настройками. Доступ: <b>владелец</b>.</p>
+        </div>
+        <span class="admin-badge">KPANIC · ВЛАДЕЛЕЦ</span>
+      </div>
+
+      <div class="admin-grid">
+        <div class="card settings-card">
+          <h3>Ресурспаки сети</h3>
+          <p class="admin-hint">Включённые паки <b>автоматически загружаются</b> игрокам при входе на сервера сети.</p>
+          <div class="admin-packs" id="adminPacks"></div>
+
+          <h3 class="admin-subhead">Загрузить новый пак</h3>
+          <form class="pack-upload" id="packUpload" novalidate>
+            <input type="text" class="field" id="packName" placeholder="Название пака" maxlength="32">
+            <input type="text" class="field" id="packVer" placeholder="Версия (26.3)" maxlength="10">
+            <input type="file" id="packFile" accept=".zip" hidden>
+            <button type="button" class="btn-buy btn-ghost" id="packFileBtn">Файл .zip</button>
+            <span class="pack-file-name" id="packFileName">не выбран</span>
+            <button type="submit" class="btn-buy">Загрузить</button>
+          </form>
+        </div>
+
+        <div class="card settings-card">
+          <h3>Ранги игроков</h3>
+          <p class="admin-hint">Ранг виден в профиле игрока и на серверах сети.</p>
+          <div class="rank-list" id="rankList"></div>
+
+          <h3 class="admin-subhead">Настройки сети</h3>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Обязательный ресурспак</span>
+              <span class="setting-desc">Игрок не войдёт на сервер без паков сети</span>
+            </div>
+            <label class="switch"><input type="checkbox" id="admForcePack" checked><i></i></label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Автообновление паков</span>
+              <span class="setting-desc">Скачивать новые версии паков у игроков</span>
+            </div>
+            <label class="switch"><input type="checkbox" id="admAutoUpdate" checked><i></i></label>
+          </div>
+          <div class="setting-row">
+            <div class="setting-text">
+              <span class="setting-name">Регистрация открыта</span>
+              <span class="setting-desc">Новые игроки могут создавать аккаунты</span>
+            </div>
+            <label class="switch"><input type="checkbox" id="admOpenReg" checked><i></i></label>
+          </div>
+          <div class="setting-row setting-col">
+            <div class="setting-text">
+              <span class="setting-name">API серверов сети</span>
+              <span class="setting-desc">Куда лаунчер отправляет аккаунты и паки</span>
+            </div>
+            <input type="text" class="field field-wide" id="admApi" value="https://api.pantenol.ru">
+          </div>
+        </div>
+      </div>
+    </section>
+
   </main>
+</div>
+
+<!-- ═══════════ ЛИЧНЫЙ КАБИНЕТ (модалка) ═══════════ -->
+<div class="modal-shade" id="profileModal" hidden>
+  <div class="modal profile-modal">
+    <button type="button" class="modal-x" id="profileClose">✕</button>
+    <div class="profile-top">
+      <img src="assets/avatar.png" class="profile-ava" alt="">
+      <div class="profile-id-block">
+        <div class="profile-name" id="profileName">—</div>
+        <span class="rank-badge" id="profileRank">Игрок</span>
+      </div>
+    </div>
+    <div class="profile-stats">
+      <div class="pstat"><label>ID аккаунта</label><span id="profileId">—</span></div>
+      <div class="pstat"><label>Регистрация</label><span id="profileDate">—</span></div>
+      <div class="pstat"><label>Покупок</label><span id="profileBuys">0</span></div>
+    </div>
+    <h4 class="profile-subhead">Мои покупки</h4>
+    <div class="profile-purchases" id="profilePurchases"></div>
+    <div class="profile-actions">
+      <button type="button" class="btn-buy btn-ghost" id="profileSettings">В настройки</button>
+      <button type="button" class="btn-buy btn-danger" id="profileLogout">Выйти</button>
+    </div>
+  </div>
 </div>
 
 <!-- Полоса окна (только в Electron): перетаскивание + кнопки окна, как в Discord -->

@@ -4,8 +4,54 @@
    ══════════════════════════════════════════════════════════ */
 const { app, BrowserWindow, ipcMain, shell } = require("electron");
 const path = require("path");
+const os = require("os");
+const fs = require("fs");
+const https = require("https");
 
 app.setName("PantenolVisuals");
+
+/* ───────── Установка модов в папку версии ───────── */
+const INSTANCES = path.join(os.homedir(), ".pantenolvisuals", "instances");
+
+function download(url, dest, hops = 0) {
+  return new Promise((resolve, reject) => {
+    https.get(url, (res) => {
+      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location && hops < 5) {
+        res.resume();
+        return download(res.headers.location, dest, hops + 1).then(resolve, reject);
+      }
+      if (res.statusCode !== 200) {
+        res.resume();
+        return reject(new Error("HTTP " + res.statusCode));
+      }
+      const out = fs.createWriteStream(dest);
+      res.pipe(out);
+      out.on("finish", () => out.close(resolve));
+      out.on("error", reject);
+    }).on("error", reject);
+  });
+}
+
+ipcMain.handle("mods-install", async (_e, { url, name, version }) => {
+  const dir = path.join(INSTANCES, version, "mods");
+  fs.mkdirSync(dir, { recursive: true });
+  const safe = name.replace(/[^\w.\-()\[\] ]/g, "_");
+  const dest = path.join(dir, safe);
+  await download(url, dest);
+  return { ok: true, dest };
+});
+
+ipcMain.handle("mods-list", async (_e, version) => {
+  const dir = path.join(INSTANCES, version, "mods");
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter((f) => f.endsWith(".jar") || f.endsWith(".disabled"));
+});
+
+ipcMain.handle("mods-remove", async (_e, { name, version }) => {
+  const f = path.join(INSTANCES, version, "mods", name);
+  if (fs.existsSync(f)) fs.unlinkSync(f);
+  return { ok: true };
+});
 
 /* Одна копия приложения */
 const gotLock = app.requestSingleInstanceLock();
