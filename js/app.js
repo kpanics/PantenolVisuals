@@ -498,10 +498,14 @@ async function mcLaunchFlow() {
 
   const res = await pvMC.launch({ version: ver, username: name, ramMb });
   if (res && res.noJava) {
-    toast("Нужна Java ☕", "sudo apt install openjdk-21-jre — потом перезапустите", "⚠");
+    const hint = res.platform === "win32"
+      ? "Скачайте Java 21: adoptium.net → Temurin 21 (JRE), затем перезапустите лаунчер"
+      : "sudo apt install -y openjdk-21-jre  — затем нажмите ИГРАТЬ снова";
+    toast("Нужна Java ☕", hint, "⚠");
+    $("#metaJava").textContent = "⚠ нужна Java";
     return;
   }
-  toast("Игра запущена 🎮", `Minecraft ${ver} · аккаунт ${name} · PID ${res && res.pid ? res.pid : "—"}`, "▶");
+  toast("Игра запущена 🎮", `Minecraft ${ver} · аккаунт ${name} · PID ${res && res.pid ? res.pid : "—"} · лог: pv-game.log`, "▶");
 }
 
 /* Симуляция для браузерного превью */
@@ -574,6 +578,19 @@ if (window.pvMC) {
   });
   pvMC.java().then((has) => {
     $("#metaJava").textContent = has ? "✓ java найдена" : "⚠ нужна Java";
+  });
+  /* игра завершилась или упала — показываем хвост лога */
+  pvMC.onExit((info) => {
+    if (!info) return;
+    if (info.code === 0) {
+      toast("Игра завершена 👋", "Minecraft закрыт корректно", "▶");
+    } else {
+      const last = (info.tail || []).filter((l) => /error|exception|crash|failed|unsupported/i.test(l)).pop()
+        || (info.tail || []).pop() || ("код " + info.code);
+      toast("⚠ Minecraft упал", last.slice(0, 180), "✕");
+      const ms = $("#metaState");
+      if (ms) { ms.textContent = "✕ см. лог pv-game.log"; ms.classList.remove("ok"); }
+    }
   });
 }
 

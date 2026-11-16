@@ -6,7 +6,7 @@
 
 **Красивый лаунчер Minecraft для Linux — своё окно, своя музыка, свои моды.**
 
-[![Версия](https://img.shields.io/badge/версия-2.8.0-34d399?style=flat-square)](https://github.com/kpanics/PantenolVisuals)
+[![Версия](https://img.shields.io/badge/версия-2.9.0-34d399?style=flat-square)](https://github.com/kpanics/PantenolVisuals)
 [![Платформа](https://img.shields.io/badge/Linux-Electron-a78bfa?style=flat-square)](https://www.electronjs.org/)
 [![Minecraft](https://img.shields.io/badge/Minecraft-Fabric%201.21.11→26.3-fbbf24?style=flat-square)](https://fabricmc.net/)
 [![License](https://img.shields.io/badge/GPL--3.0-license-38bdf8?style=flat-square)](LICENSE)
