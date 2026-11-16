@@ -18,13 +18,19 @@ ipcMain.handle("mc-latest", () => mc.latestRelease());
 ipcMain.handle("mc-status", (_e, version) => mc.isInstalled(version));
 ipcMain.handle("mc-java", () => mc.checkJava());
 ipcMain.handle("mc-install", async (e, version) => {
-  await mc.install(version, (p) => e.sender.send("mc-progress", p));
-  return { ok: true };
+  try {
+    await mc.install(version, (p) => e.sender.send("mc-progress", p));
+    return { ok: true };
+  } catch (err) {
+    e.sender.send("mc-progress", { stage: "Ошибка: " + err.message, pct: 0 });
+    throw err;
+  }
 });
-ipcMain.handle("mc-launch", async (_e, opts) => {
-  const hasJava = await mc.checkJava();
-  if (!hasJava) return { ok: false, noJava: true };
-  return { ok: true, ...(await mc.launch(opts)) };
+ipcMain.handle("mc-launch", async (e, opts) => {
+  return await mc.launch({
+    ...opts,
+    onExit: (info) => e.sender.send("mc-exit", info),
+  });
 });
 
 /* ───────── Автообновление приложения ───────── */

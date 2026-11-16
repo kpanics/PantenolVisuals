@@ -30,6 +30,7 @@ contextBridge.exposeInMainWorld("pvMC", {
   install: (v) => ipcRenderer.invoke("mc-install", v),
   launch: (opts) => ipcRenderer.invoke("mc-launch", opts),
   onProgress: (cb) => ipcRenderer.on("mc-progress", (_e, d) => cb(d)),
+  onExit: (cb) => ipcRenderer.on("mc-exit", (_e, d) => cb(d)),
 });
 
 /* Автообновление приложения */
