@@ -17,11 +17,17 @@
 
 ## 🚀 Установка одной командой
 
+**Linux:**
 ```bash
 curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/main/install.sh | bash
 ```
 
-Установщик сам скачает лаунчер, **встроенный движок Electron** (~90 МБ, один раз — как у Discord) и добавит ярлык в меню приложений. Дальше обновления подтягиваются с GitHub автоматически при каждом запуске.
+**Windows** (PowerShell):
+```powershell
+irm https://raw.githubusercontent.com/kpanics/PantenolVisuals/main/install.ps1 | iex
+```
+
+Установщик сам скачает лаунчер, **встроенный движок Electron** (~95 МБ, один раз — как у Discord) и добавит ярлык (меню приложений / рабочий стол). Дальше обновления подтягиваются с GitHub автоматически при каждом запуске.
 
 ## ✨ Возможности
 
@@ -49,8 +55,10 @@ curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/main/install.
 ├── js/player.js      # SoundCloud-плеер
 ├── electron/         # нативное окно + IPC (моды, база данных)
 ├── assets/           # сгенерированная графика
-├── install.sh        # установка в одну команду
-└── launch.sh         # запуск + автообновление
+├── install.sh        # установка Linux
+├── install.ps1       # установка Windows
+├── launch.sh         # запуск + автообновление (Linux)
+└── launch.bat        # запуск + автообновление (Windows)
 ```
 
 <div align="center">

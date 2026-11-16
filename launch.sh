@@ -67,10 +67,26 @@ if [ ! -x "$RT/electron" ]; then
 fi
 
 # ── 3. Запуск ──
+LOG="$HOME/.pantenolvisuals/launcher.log"
+mkdir -p "$HOME/.pantenolvisuals"
+
+start_electron() {
+  # $1 — доп. флаги
+  echo "▶ Запуск PantenolVisuals (нативное окно) $1"
+  : > "$LOG"
+  "$RT/electron" "$DIR" $1 --no-sandbox >>"$LOG" 2>&1 &
+  local pid=$!
+  sleep 3
+  kill -0 "$pid" 2>/dev/null
+}
+
 if [ -x "$RT/electron" ]; then
-  echo "▶ Запуск PantenolVisuals (нативное окно)"
-  exec "$RT/electron" "$DIR" --no-sandbox >/dev/null 2>&1 &
-  exit 0
+  if start_electron ""; then exit 0; fi
+  echo "⚠ Окно не открылось — пробую ещё раз с --disable-gpu…"
+  if start_electron "--disable-gpu"; then exit 0; fi
+  echo "✖ Окно не открылось. Последние строки лога ($LOG):"
+  tail -n 12 "$LOG"
+  echo "  Подсказка: sudo apt install -y libgtk-3-0 libnss3 libasound2 libgbm1"
 fi
 
 # Запасной вариант, если движок скачать не вышло
