@@ -18,15 +18,18 @@ RT_URL="https://github.com/electron/electron/releases/download/v$EV/electron-v$E
 
 # ── 1. Автообновление файлов лаунчера ──
 echo "⟳ PantenolVisuals: проверка обновлений…"
+UPDATED=0
 if [ -d .git ] && command -v git >/dev/null 2>&1; then
-  if git fetch origin "$BRANCH" -q 2>/dev/null; then
-    git reset --hard "origin/$BRANCH" -q 2>/dev/null && echo "✔ Лаунчер обновлён до последней версии"
-  else
-    echo "⚠ Нет сети — запускаю текущую версию"
+  git remote set-url origin https://github.com/kpanics/PantenolVisuals.git 2>/dev/null || true
+  # явный refspec: чинит старые установки, склонированные с --depth 1 -b <ветка>
+  if git fetch -q origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" 2>/dev/null; then
+    git reset --hard FETCH_HEAD -q 2>/dev/null && { echo "✔ Лаунчер обновлён до последней версии"; UPDATED=1; }
   fi
-elif command -v curl >/dev/null 2>&1; then
+fi
+if [ "$UPDATED" = "0" ] && command -v curl >/dev/null 2>&1; then
+  echo "⚠ git-обновление не вышло — пробую через zip…"
   TMP=$(mktemp -d)
-  if curl -sL --max-time 20 "$REPO_ZIP" -o "$TMP/pv.zip" && [ -s "$TMP/pv.zip" ]; then
+  if curl -sL --max-time 25 "$REPO_ZIP" -o "$TMP/pv.zip" && [ -s "$TMP/pv.zip" ]; then
     unzip -qo "$TMP/pv.zip" -d "$TMP" 2>/dev/null || true
     SRC=$(find "$TMP" -maxdepth 1 -type d -name "PantenolVisuals-*" 2>/dev/null | head -1)
     if [ -n "$SRC" ] && [ -f "$SRC/index.html" ]; then
@@ -34,7 +37,7 @@ elif command -v curl >/dev/null 2>&1; then
       echo "✔ Лаунчер обновлён до последней версии"
     fi
   else
-    echo "⚠ Обновление пропущено (нет сети)"
+    echo "⚠ Нет сети — запускаю текущую версию"
   fi
   rm -rf "$TMP"
 fi

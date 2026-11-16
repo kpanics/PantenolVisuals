@@ -18,15 +18,17 @@ EV="33.2.0"
 RT_URL="https://github.com/electron/electron/releases/download/v$EV/electron-v$EV-linux-x64.zip"
 
 echo "╔═══════════════════════════════════════╗"
-echo "║   PantenolVisuals · установка v2.5    ║"
+echo "║   PantenolVisuals · установка v2.6    ║"
 echo "╚═══════════════════════════════════════╝"
 
 # ── 1. Файлы лаунчера ──
 if command -v git >/dev/null 2>&1; then
   if [ -d "$DEST/.git" ]; then
     echo "⟳ Найдена установка — обновляю…"
-    git -C "$DEST" fetch origin "$BRANCH" -q
-    git -C "$DEST" reset --hard "origin/$BRANCH" -q
+    git -C "$DEST" remote set-url origin "$REPO" 2>/dev/null || true
+    # явный refspec лечит старые single-branch клоны
+    git -C "$DEST" fetch origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH" -q
+    git -C "$DEST" reset --hard FETCH_HEAD -q
   else
     echo "⟳ Скачиваю лаунчер…"
     git clone -q --depth 1 -b "$BRANCH" "$REPO" "$DEST"
