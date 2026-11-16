@@ -9,7 +9,7 @@
 cd "$(dirname "$0")"
 DIR="$(pwd)"
 
-BRANCH="arena/bc63aeac-pantenolvisuals"
+BRANCH="main"
 REPO_ZIP="https://codeload.github.com/kpanics/PantenolVisuals/zip/refs/heads/$BRANCH"
 
 EV="33.2.0"

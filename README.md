@@ -5,13 +5,13 @@
 ## Установка одной командой
 
 ```bash
-curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/arena/bc63aeac-pantenolvisuals/install.sh | bash
+curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/main/install.sh | bash
 ```
 
 Или через git:
 
 ```bash
-git clone -b arena/bc63aeac-pantenolvisuals https://github.com/kpanics/PantenolVisuals.git
+git clone -b main https://github.com/kpanics/PantenolVisuals.git
 cd PantenolVisuals
 ./launch.sh
 ```

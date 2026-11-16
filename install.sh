@@ -1,7 +1,7 @@
 #!/bin/bash
 # ═══════════════════════════════════════════════════════
 #  PantenolVisuals Launcher — установка одной командой:
-#  curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/arena/bc63aeac-pantenolvisuals/install.sh | bash
+#  curl -sL https://raw.githubusercontent.com/kpanics/PantenolVisuals/main/install.sh | bash
 #
 #  Что делает:
 #   · скачивает лаунчер и встроенный движок (Electron ~90 МБ)
@@ -12,7 +12,7 @@
 set -e
 
 REPO="https://github.com/kpanics/PantenolVisuals.git"
-BRANCH="arena/bc63aeac-pantenolvisuals"
+BRANCH="main"
 DEST="$HOME/PantenolVisuals"
 EV="33.2.0"
 RT_URL="https://github.com/electron/electron/releases/download/v$EV/electron-v$EV-linux-x64.zip"
